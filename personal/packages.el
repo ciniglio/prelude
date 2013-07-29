@@ -1,5 +1,6 @@
 (prelude-ensure-module-deps
  '(ack-and-a-half
+   bookmark+
    clojure-mode
    clojure-test-mode
    coffee-mode
