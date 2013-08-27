@@ -1,10 +1,12 @@
 (prelude-ensure-module-deps
  '(ack-and-a-half
+   base16-theme
    bookmark+
    clojure-mode
    clojure-test-mode
    coffee-mode
    cyberpunk-theme
+   deft
    diminish
    elisp-slime-nav
    exec-path-from-shell

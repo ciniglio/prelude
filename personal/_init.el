@@ -1,1 +1,1 @@
-(require 'bookmark+)
+
