@@ -5,6 +5,7 @@
    clojure-mode
    clojure-test-mode
    coffee-mode
+   company
    cyberpunk-theme
    deft
    diminish
@@ -48,3 +49,4 @@
    smex
    volatile-highlights
    ))
+
