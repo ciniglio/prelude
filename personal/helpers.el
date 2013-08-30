@@ -10,9 +10,9 @@
   (let ((name (buffer-name))
         (filename (buffer-file-name))
         (dir-name (file-name-directory (buffer-file-name))))
-    (cond ((not filename) 
+    (cond ((not filename)
            (message "Buffer '%s' is not visiting a file!" name))
-          ((not (unique-name-for-buffer-p new-name)) 
+          ((not (unique-name-for-buffer-p new-name))
            (message "A buffer named '%s' already exists in that location!" new-name))
           (t (rename-file (file-name-nondirectory filename) new-name 1)
              (kill-buffer)
@@ -27,7 +27,7 @@
         (backward-char 1)
         (if (looking-at "->") t nil)))))
 
-(defun do-yas-expand ()  
+(defun do-yas-expand ()
   (let ((yas/fallback-behavior 'return-nil))
     (yas/expand)))
 
@@ -41,7 +41,3 @@
         (if (check-expansion)
             (company-complete-common)
           (indent-for-tab-command)))))
-
-
-
-
