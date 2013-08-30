@@ -17,3 +17,31 @@
           (t (rename-file (file-name-nondirectory filename) new-name 1)
              (kill-buffer)
              (set-buffer (find-file (concat dir-name new-name)))))))
+
+
+(defun check-expansion ()
+  (save-excursion
+    (if (looking-at "\\_>") t
+      (backward-char 1)
+      (if (looking-at "\\.") t
+        (backward-char 1)
+        (if (looking-at "->") t nil)))))
+
+(defun do-yas-expand ()  
+  (let ((yas/fallback-behavior 'return-nil))
+    (yas/expand)))
+
+(defun tab-indent-or-complete ()
+  (interactive)
+  (if (or (minibufferp)
+          (string-match "Minibuf" (buffer-name)))
+      (ido-complete)
+    (if (or (not yas/minor-mode)
+            (null (do-yas-expand)))
+        (if (check-expansion)
+            (company-complete-common)
+          (indent-for-tab-command)))))
+
+
+
+
