@@ -1,0 +1,3 @@
+[submodule "vendor/flymake"]
+	path = vendor/flymake
+	url = https://github.com/illusori/emacs-flymake
