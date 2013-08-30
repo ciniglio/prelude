@@ -49,4 +49,3 @@
    smex
    volatile-highlights
    ))
-
