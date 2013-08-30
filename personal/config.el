@@ -15,3 +15,10 @@
 (global-set-key [tab] 'tab-indent-or-complete)
 (setq company-idle-delay 0.2)
 (setq company-minimum-prefix-length 1)
+
+;; Whitespace
+(global-whitespace-mode 1)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; Coffee-Tab Width
+(setq coffee-tab-width 2)
