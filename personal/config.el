@@ -3,7 +3,6 @@
 ;; Alejandro Ciniglio 2013
 ;;
 
-
 ;;;   Appearance
 ;; Color theme
 (load-theme 'base16-chalk)
@@ -37,4 +36,10 @@
 
 ;;; Key maps
 ;; Tab or complete helper
-(global-set-key [tab] 'tab-indent-or-complete)
+(require 'smart-tab)
+(global-smart-tab-mode 1)
+
+
+;;; Hooks
+;; Go Mode
+(add-hook 'before-save-hook #'gofmt-before-save)
