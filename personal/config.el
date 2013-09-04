@@ -41,5 +41,11 @@
 
 
 ;;; Hooks
+;; Coffee Mode
+(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+
+;; Haml Mode
+(add-to-list 'auto-mode-alist '("\\.hamlc$" . haml-mode))
+
 ;; Go Mode
 (add-hook 'before-save-hook #'gofmt-before-save)
