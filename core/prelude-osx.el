@@ -39,8 +39,7 @@
 (exec-path-from-shell-initialize)
 
 ;; It's all in the Meta
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier 'meta)
+(setq ns-function-modifier 'hyper)
 
 (defun prelude-swap-meta-and-super ()
   "Swap the mapping of Meta and Super.
