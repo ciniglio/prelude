@@ -1,4 +1,4 @@
-(prelude-ensure-module-deps
+(prelude-require-packages
  '(ack-and-a-half
    base16-theme
    bookmark+
@@ -7,6 +7,7 @@
    coffee-mode
    company
    cyberpunk-theme
+   dash
    deft
    diminish
    elisp-slime-nav
@@ -22,6 +23,7 @@
    helm-projectile
    helm
    ido-ubiquitous
+   inf-ruby
    key-chord
    logito
    magit
@@ -32,7 +34,6 @@
    pcache
    powerline
    projectile
-   dash
    rainbow-delimiters
    rainbow-mode
    rbenv
@@ -42,7 +43,6 @@
    robe
    rspec-mode
    ruby-compilation
-   inf-ruby
    ruby-electric
    ruby-tools
    sass-mode

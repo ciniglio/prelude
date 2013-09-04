@@ -48,4 +48,4 @@
 (add-to-list 'auto-mode-alist '("\\.hamlc$" . haml-mode))
 
 ;; Go Mode
-(add-hook 'before-save-hook #'gofmt-before-save)
+;; (add-hook 'before-save-hook #'gofmt-before-save)
