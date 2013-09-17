@@ -39,6 +39,7 @@
 (require 'smart-tab)
 (global-smart-tab-mode 1)
 
+(key-chord-define-global "GG" 'magit-status)
 
 ;;; Hooks
 ;; Coffee Mode
