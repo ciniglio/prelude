@@ -2,6 +2,7 @@
  '(ack-and-a-half
    base16-theme
    bookmark+
+   cider
    clojure-mode
    clojure-test-mode
    coffee-mode
@@ -29,7 +30,6 @@
    magit
    markdown-mode+
    melpa
-   nrepl
    paredit
    pcache
    powerline
