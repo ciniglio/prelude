@@ -1,2 +1,2 @@
-(require 'flymake)
-(require 'flymake-go)
+;(require 'flymake)
+;(require 'flymake-go)
