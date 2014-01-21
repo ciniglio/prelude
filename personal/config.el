@@ -5,7 +5,7 @@
 
 ;;;   Appearance
 ;; Color theme
-(load-theme 'base16-chalk)
+(load-theme 'base16-chalk t)
 
 ;; Hide menu bar
 (menu-bar-mode -1)
@@ -39,6 +39,9 @@
 (require 'smart-tab)
 (global-smart-tab-mode 1)
 
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
 (key-chord-define-global "GG" 'magit-status)
 
 ;;; Hooks
@@ -50,3 +53,9 @@
 
 ;; Go Mode
 ;; (add-hook 'before-save-hook #'gofmt-before-save)
+
+;; Ruby Mode
+(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.gemspec$" . ruby-mode))

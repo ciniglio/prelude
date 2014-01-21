@@ -9,6 +9,7 @@
    company
    cyberpunk-theme
    dash
+   diff-hl
    deft
    diminish
    elisp-slime-nav
@@ -23,7 +24,9 @@
    guru-mode
    helm-projectile
    helm
+   highlight-symbol
    ido-ubiquitous
+   ido-vertical-mode
    inf-ruby
    key-chord
    logito
@@ -48,4 +51,5 @@
    sass-mode
    smex
    volatile-highlights
+   web-mode
    ))
