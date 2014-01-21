@@ -13,6 +13,8 @@
 ;; Hide Scroll Bar
 (scroll-bar-mode -1)
 
+;; Ansi-term glitch
+(setq system-uses-terminfo nil)
 
 ;;; Mode Config
 ;; Whitespace
@@ -33,6 +35,9 @@
 (setq company-idle-delay 0.2)
 (setq company-minimum-prefix-length 1)
 
+;; Magit
+(setq magit-completing-read-function
+      'magit-ido-completing-read)
 
 ;;; Key maps
 ;; Tab or complete helper

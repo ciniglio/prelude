@@ -49,6 +49,7 @@
    ruby-electric
    ruby-tools
    sass-mode
+   smart-tab
    smex
    volatile-highlights
    web-mode
