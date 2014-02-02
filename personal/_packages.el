@@ -37,6 +37,7 @@
    pcache
    powerline
    projectile
+   project-explorer
    rainbow-delimiters
    rainbow-mode
    rbenv
