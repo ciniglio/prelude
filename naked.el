@@ -35,3 +35,11 @@
       `((".*" ,emacs-tmp-dir t)))
 (setq auto-save-list-file-prefix
       emacs-tmp-dir)
+
+;; Bigger
+(when (window-system)
+  (set-frame-height (selected-frame) 65)
+  (set-frame-width (selected-frame) 230))
+
+(setq default-frame-alist
+      '((width . 230) (height . 65)))

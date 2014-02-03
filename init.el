@@ -9,3 +9,5 @@
 (load "programming_modes.el")
 (load "keyboard_shortcuts.el")
 (load "gui.el")
+
+(delete-selection-mode 1)
