@@ -16,7 +16,7 @@
 (setq inhibit-startup-echo-area-message "alejandro")
 
 ;; This is bound to f11 in Emacs 24.4
-;(toggle-frame-fullscreen) 
+;(toggle-frame-fullscreen)
 ;; Who use the bar to scroll?
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
@@ -27,7 +27,7 @@
  '(fringe ((t (:background "white")))))
 
 ;; Dumb autosave files
-;; Save all tempfiles in $TMPDIR/emacs$UID/                                                        
+;; Save all tempfiles in $TMPDIR/emacs$UID/
 (defconst emacs-tmp-dir (format "%s/%s%s/" temporary-file-directory "emacs" (user-uid)))
 (setq backup-directory-alist
       `((".*" . ,emacs-tmp-dir)))

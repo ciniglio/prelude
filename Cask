@@ -8,6 +8,7 @@
 (depends-on "yasnippet")
 (depends-on "undo-tree")
 
+(depends-on "base16-theme")
 (depends-on "powerline")
 
 (depends-on "flx-ido")
