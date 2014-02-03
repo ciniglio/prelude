@@ -2,6 +2,7 @@
 (cask-initialize)
 
 (add-to-list 'load-path "~/.emacs.d/")
+(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
 
 (load "naked.el")
 (load "basics.el")

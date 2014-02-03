@@ -15,13 +15,6 @@
 ;; then enter your username
 (setq inhibit-startup-echo-area-message "alejandro")
 
-;; This is bound to f11 in Emacs 24.4
-;(toggle-frame-fullscreen)
-;; Who use the bar to scroll?
-(scroll-bar-mode 0)
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-
 ;; Set the color of the fringe
 (custom-set-faces
  '(fringe ((t (:background "white")))))
@@ -54,6 +47,13 @@
 
 (add-hook 'volatile-highlights-mode-hook
 	  (lambda () (my-remove-mm-indicator 'volatile-highlights-mode)))
+
+;; This is bound to f11 in Emacs 24.4
+;(toggle-frame-fullscreen)
+;; Who use the bar to scroll?
+(scroll-bar-mode 0)
+(tool-bar-mode 0)
+(menu-bar-mode 0)
 
 ;; revert buffers automatically when underlying files are changed externally
 (global-auto-revert-mode t)
