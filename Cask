@@ -7,6 +7,7 @@
 (depends-on "projectile")
 (depends-on "yasnippet")
 (depends-on "undo-tree")
+(depends-on "volatile-highlights")
 (depends-on "multiple-cursors")
 
 (depends-on "base16-theme")

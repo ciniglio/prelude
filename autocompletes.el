@@ -8,6 +8,7 @@
 ;; Auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
+(ac-flyspell-workaround)
 
 (add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
 (add-hook 'cider-mode-hook 'ac-flyspell-workaround)

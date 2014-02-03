@@ -43,3 +43,17 @@
 
 (setq default-frame-alist
       '((width . 230) (height . 65)))
+
+;; Mode line
+(defun my-remove-mm-indicator (mm)
+  "Remove minor indicator from the mode line."
+  (setcar (cdr (assq mm minor-mode-alist)) nil))
+
+(add-hook 'undo-tree-mode-hook
+	  (lambda () (my-remove-mm-indicator 'undo-tree-mode)))
+
+(add-hook 'volatile-highlights-mode-hook
+	  (lambda () (my-remove-mm-indicator 'volatile-highlights-mode)))
+
+;; revert buffers automatically when underlying files are changed externally
+(global-auto-revert-mode t)
