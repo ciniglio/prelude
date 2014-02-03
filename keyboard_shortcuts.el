@@ -23,3 +23,9 @@
   (lambda () (interactive)
     (let ((case-fold-search isearch-case-fold-search))
       (occur (if isearch-regexp isearch-string (regexp-quote isearch-string))))))
+
+;; Chords
+(key-chord-mode 1)
+(key-chord-define-global "jj" 'ace-jump-word-mode)
+(key-chord-define-global "jk" 'ace-jump-buffer)
+(key-chord-define-global "GG" 'magit-status)

@@ -30,11 +30,16 @@
 (global-rainbow-delimiters-mode)
 
 (require 'smartparens-config)
+(require 'smartparens-ruby)
 (setq sp-base-key-bindings 'paredit)
 (setq sp-autoskip-closing-pair 'always)
 (setq sp-hybrid-kill-entire-symbol nil)
 (sp-use-paredit-bindings)
 (show-smartparens-global-mode +1)
+(smartparens-global-mode +1)
+
+(dolist (x '(scheme emacs-lisp lisp clojure cider-repl))
+  (add-hook (intern (concat (symbol-name x) "-mode-hook")) '(lambda () (smartparens-strict-mode 1))))
 
 (dolist (x '(scheme emacs-lisp lisp clojure cider-repl))
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) '(lambda () (smartparens-strict-mode 1))))
@@ -72,14 +77,24 @@
 (require 'multiple-cursors)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Files and modes
+;; Files and mode
 (dolist (exp '("Rakefile\\'" "\\.rake\\'"))
+  (add-to-list 'auto-mode-alist
+	       (cons exp 'ruby-mode)))
+
+(dolist (exp '("\\zshrc\\'" "\\bashrc\\'"))
   (add-to-list 'auto-mode-alist
 	       (cons exp 'ruby-mode)))
 
 (dolist (exp '("Cask\\'"))
   (add-to-list 'auto-mode-alist
 	       (cons exp 'emacs-lisp-mode)))
+
+
+(require 'web-mode)
+(dolist (exp '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.jsp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.html?\\'" "\\.mustache\\'" "\\.djhtml\\'"))
+  (add-to-list 'auto-mode-alist
+	       (cons exp 'web-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flyspell
@@ -89,4 +104,5 @@
 (mapcar (lambda (mode-hook) (add-hook mode-hook 'flyspell-prog-mode))
 	'(c-mode-common-hook tcl-mode-hook emacs-lisp-mode-hook
 	  ruby-mode-hook java-mode-hook clojure-mode-hook
+
 	  web-mode-hook sass-mode-hook))

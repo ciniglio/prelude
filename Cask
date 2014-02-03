@@ -10,6 +10,10 @@
 (depends-on "volatile-highlights")
 (depends-on "multiple-cursors")
 
+(depends-on "ace-jump-mode")
+(depends-on "ace-jump-buffer")
+(depends-on "key-chord")
+
 (depends-on "base16-theme")
 (depends-on "powerline")
 
