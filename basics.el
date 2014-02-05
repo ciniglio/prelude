@@ -33,6 +33,7 @@ The body of the advice is in BODY."
 
 (require 'volatile-highlights)
 (volatile-highlights-mode t)
+(diminish 'volatile-highlights-mode)
 
 ;; replace selection
 (delete-selection-mode 1)

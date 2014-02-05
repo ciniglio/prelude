@@ -1,7 +1,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Projectile
+(require 'projectile)
+(setq projectile-mode-line-lighter " P")
+(projectile-update-mode-line)
 (projectile-global-mode)
 (setq projectile-remember-window-configs t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Whitespace mode
@@ -11,6 +15,7 @@
 (setq whitespace-style '(face trailing space-before-tab indentation empty space-after-tab))
 ;; enable
 (global-whitespace-mode 1)
+(diminish 'global-whitespace-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Coffee Mode
@@ -20,6 +25,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; yas
 (yas-global-mode 1)
+(diminish 'yas-minor-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Undo
@@ -98,11 +104,18 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flyspell
-(defun turn-on-flyspell () (flyspell-mode 1))
+(defun turn-on-flyspell ()
+  (progn
+    (flyspell-mode 1)
+    (diminish 'flyspell-mode)))
 (add-hook 'find-file-hooks 'turn-on-flyspell)
 
-(mapcar (lambda (mode-hook) (add-hook mode-hook 'flyspell-prog-mode))
+(defun turn-on-flyspell-prog ()
+  (progn
+    (flyspell-prog-mode)
+    (diminish 'flyspell-mode)))
+
+(mapcar (lambda (mode-hook) (add-hook mode-hook 'turn-on-flyspell-prog))
 	'(c-mode-common-hook tcl-mode-hook emacs-lisp-mode-hook
 	  ruby-mode-hook java-mode-hook clojure-mode-hook
-
 	  web-mode-hook sass-mode-hook))

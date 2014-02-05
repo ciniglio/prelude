@@ -1,4 +1,4 @@
-(powerline-vim-theme)
+(powerline-default-theme)
 (load-theme 'base16-eighties t)
 
 ;; Set the color of the fringe

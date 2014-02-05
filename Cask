@@ -5,6 +5,8 @@
 
 (depends-on "magit")
 (depends-on "projectile")
+(depends-on "prodigy")
+(depends-on "diminish")
 (depends-on "yasnippet")
 (depends-on "undo-tree")
 (depends-on "volatile-highlights")
@@ -25,6 +27,8 @@
 (depends-on "rainbow-delimiters")
 (depends-on "ac-cider-compliment")
 (depends-on "smartparens")
+
+(depends-on "enh-ruby-mode")
 
 (depends-on "coffee-mode")
 
