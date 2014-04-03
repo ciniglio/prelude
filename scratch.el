@@ -38,3 +38,10 @@
 (prodigy-define-tag
   :name 'rails
   :tags '(thin mongrel webrick))
+
+(prodigy-define-service
+  :name "Readuction"
+  :command "bundle"
+  :args '("exec" "rails" "server")
+  :cwd "~/_dev/_projects/adaptive-reader"
+  :tags '(work rails))
