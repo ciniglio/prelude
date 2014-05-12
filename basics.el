@@ -2,6 +2,10 @@
 (require 'windmove)
 (windmove-default-keybindings)
 
+;; Shutdown obnoxious popup windows
+(require 'popwin)
+(popwin-mode 1)
+
 ;; automatically save buffers associated with files on buffer switch
 ;; and on windows switch
 (defun prelude-auto-save-command ()
@@ -13,7 +17,6 @@
 
 (defmacro advise-commands (advice-name commands &rest body)
   "Apply advice named ADVICE-NAME to multiple COMMANDS.
-
 The body of the advice is in BODY."
   `(progn
      ,@(mapcar (lambda (command)
@@ -38,9 +41,7 @@ The body of the advice is in BODY."
 ;; replace selection
 (delete-selection-mode 1)
 
-
 ;; Helpful functions
-
 (defun rename-this-buffer-and-file ()
   "Renames current buffer and file it is visiting."
   (interactive)

@@ -1,16 +1,10 @@
 ;; Autocompletes in most menus
 (ido-mode 1)
 (ido-everywhere 1)
+(ido-vertical-mode 1)
 (flx-ido-mode 1)
 (setq ido-use-faces nil)
 (smex-initialize)
 
-;; Auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
-(ac-flyspell-workaround)
-
-(add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
-(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'cider-mode))
+(add-hook 'after-init-hook 'global-company-mode)
+(eval-after-load 'company '(add-to-list 'company-backends 'company-cider))
