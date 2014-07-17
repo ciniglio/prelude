@@ -21,3 +21,4 @@ session*
 .cask
 *.dat
 /projectile.cache
+/.mc-lists.el

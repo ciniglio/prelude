@@ -3,9 +3,11 @@
 
 ;; Prevent the cursor from blinking
 (blink-cursor-mode 0)
+
 ;; Don't use messages that you don't read
 (setq initial-scratch-message "")
 (setq inhibit-startup-message t)
+
 ;; Don't let Emacs hurt your ears
 (setq visible-bell t)
 
@@ -41,12 +43,6 @@
 (defun my-remove-mm-indicator (mm)
   "Remove minor indicator from the mode line."
   (setcar (cdr (assq mm minor-mode-alist)) nil))
-
-(add-hook 'undo-tree-mode-hook
-	  (lambda () (my-remove-mm-indicator 'undo-tree-mode)))
-
-(add-hook 'volatile-highlights-mode-hook
-	  (lambda () (my-remove-mm-indicator 'volatile-highlights-mode)))
 
 ;; This is bound to f11 in Emacs 24.4
 ;(toggle-frame-fullscreen)

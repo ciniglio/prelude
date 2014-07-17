@@ -8,6 +8,7 @@
 (define-key projectile-mode-map [?\s-p] 'projectile-switch-project)
 (define-key projectile-mode-map [?\s-f] 'projectile-find-file)
 (define-key projectile-mode-map [?\s-g] 'projectile-grep)
+(define-key projectile-mode-map [?\s-b] 'projectile-switch-to-buffer)
 
 ;; Magit
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -30,7 +31,3 @@
 (key-chord-define-global "jk" 'ace-jump-buffer)
 (key-chord-define-global "ww" 'ace-window)
 (key-chord-define-global "GG" 'magit-status)
-
-;; God mode
-(key-chord-define-global "  " 'god-mode-all)
-(global-set-key (kbd "<escape>") 'god-mode-all)

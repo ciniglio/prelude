@@ -6,7 +6,6 @@
 (projectile-global-mode)
 (setq projectile-remember-window-configs t)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Whitespace mode
 ;; automatically clean up bad whitespace
@@ -30,6 +29,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Undo
 (global-undo-tree-mode)
+(diminish 'undo-tree-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Delims
@@ -43,9 +43,6 @@
 (sp-use-paredit-bindings)
 (show-smartparens-global-mode +1)
 (smartparens-global-mode +1)
-
-(dolist (x '(scheme emacs-lisp lisp clojure cider-repl))
-  (add-hook (intern (concat (symbol-name x) "-mode-hook")) '(lambda () (smartparens-strict-mode 1))))
 
 (dolist (x '(scheme emacs-lisp lisp clojure cider-repl))
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) '(lambda () (smartparens-strict-mode 1))))
@@ -96,6 +93,9 @@
   (add-to-list 'auto-mode-alist
 	       (cons exp 'emacs-lisp-mode)))
 
+(dolist (exp '("\\.hamlc\\'"))
+  (add-to-list 'auto-mode-alist
+	       (cons exp 'haml-mode)))
 
 (require 'web-mode)
 (dolist (exp '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.jsp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.html?\\'" "\\.mustache\\'" "\\.djhtml\\'"))
@@ -118,4 +118,4 @@
 (mapcar (lambda (mode-hook) (add-hook mode-hook 'turn-on-flyspell-prog))
 	'(c-mode-common-hook tcl-mode-hook emacs-lisp-mode-hook
 	  ruby-mode-hook java-mode-hook clojure-mode-hook
-	  web-mode-hook sass-mode-hook))
+	  coffee-mode-hook haml-mode-hook web-mode-hook sass-mode-hook))
