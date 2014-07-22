@@ -18,5 +18,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(coffee-tab-width 2)
+ '(custom-safe-themes
+   (quote
+    ("e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" default)))
  '(magit-default-tracking-name-function (quote magit-default-tracking-name-branch-only))
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify)))
