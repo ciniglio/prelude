@@ -1,5 +1,5 @@
 (powerline-default-theme)
-(load-theme 'base16-eighties t)
+(load-theme 'base16-tomorrow t)
 
 ;; Set the color of the fringe
 (let ((background-color (face-attribute 'default :background)))

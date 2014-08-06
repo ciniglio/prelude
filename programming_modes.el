@@ -4,10 +4,8 @@
 
 (setq projectile-mode-line
    (quote
-    (" P"
-     (:eval
-      (format "[%s]"
-	      (projectile-project-name))))))
+    (" P" (:eval (format "|%s|"
+			 (projectile-project-name))))))
 
 (projectile-global-mode)
 
@@ -16,7 +14,7 @@
 ;; automatically clean up bad whitespace
 (setq whitespace-action '(auto-cleanup))
 ;; only show bad whitespace
-(setq whitespace-style '(face trailing space-before-tab indentation empty space-after-tab))
+(setq whitespace-style '(face trailing space-before-tab indentation::space empty space-after-tab))
 ;; enable
 (global-whitespace-mode 1)
 (diminish 'global-whitespace-mode)
@@ -79,6 +77,13 @@
 (add-hook 'css-mode-hook 'rainbow-mode)
 (add-hook 'sass-mode-hook 'rainbow-mode)
 (add-hook 'web-mode-hook 'rainbow-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Cider
+;;
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq cider-show-error-buffer 't)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Multiple cursors

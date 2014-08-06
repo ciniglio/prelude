@@ -6,5 +6,6 @@
 (setq ido-use-faces nil)
 (smex-initialize)
 
-(add-hook 'after-init-hook 'global-company-mode)
-(eval-after-load 'company '(add-to-list 'company-backends 'company-cider))
+(setq company-minimum-prefix-length 2)
+(setq company-idle-delay .1)
+(global-company-mode)
