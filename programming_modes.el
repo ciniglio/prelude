@@ -1,10 +1,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Projectile
 (require 'projectile)
-(setq projectile-mode-line-lighter " P")
-(projectile-update-mode-line)
+
+(setq projectile-mode-line
+   (quote
+    (" P"
+     (:eval
+      (format "[%s]"
+	      (projectile-project-name))))))
+
 (projectile-global-mode)
-(setq projectile-remember-window-configs t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Whitespace mode
