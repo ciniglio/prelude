@@ -14,7 +14,7 @@
 ;; automatically clean up bad whitespace
 (setq whitespace-action '(auto-cleanup))
 ;; only show bad whitespace
-(setq whitespace-style '(face trailing space-before-tab indentation::space empty space-after-tab))
+(setq whitespace-style '(face trailing space-before-tab tabs empty space-after-tab))
 ;; enable
 (global-whitespace-mode 1)
 (diminish 'global-whitespace-mode)
@@ -36,16 +36,21 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Delims
-(global-rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 (require 'smartparens-config)
 (require 'smartparens-ruby)
 (setq sp-base-key-bindings 'paredit)
 (setq sp-autoskip-closing-pair 'always)
 (setq sp-hybrid-kill-entire-symbol nil)
+
+(sp-local-pair 'enh-ruby-mode "{" nil :post-handlers '(:add " | "))
+(sp-local-pair 'ruby-mode "{" nil :post-handlers '(:add " | "))
+
 (sp-use-paredit-bindings)
 (show-smartparens-global-mode +1)
 (smartparens-global-mode +1)
+
 
 (dolist (x '(scheme emacs-lisp lisp clojure cider-repl))
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) '(lambda () (smartparens-strict-mode 1))))
