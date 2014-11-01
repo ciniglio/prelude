@@ -113,7 +113,9 @@
 	       (cons exp 'haml-mode)))
 
 (require 'web-mode)
-(dolist (exp '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.jsp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.html?\\'" "\\.mustache\\'" "\\.djhtml\\'"))
+(dolist (exp '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.jsp\\'" "\\.as[cp]x\\'"
+	       "\\.erb\\'" "\\.html?\\'" "\\.mustache\\'" "\\.djhtml\\'"
+	       "\\.jsx\\'"))
   (add-to-list 'auto-mode-alist
 	       (cons exp 'web-mode)))
 
