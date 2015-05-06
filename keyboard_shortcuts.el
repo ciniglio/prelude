@@ -1,6 +1,6 @@
 ;; M-x
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "C-x C-m") 'smex)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 ;; Projectile
