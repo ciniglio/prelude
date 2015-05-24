@@ -5,7 +5,7 @@
 (setq projectile-mode-line
    (quote
     (" P" (:eval (format "|%s|"
-			 (projectile-project-name))))))
+                         (projectile-project-name))))))
 
 (projectile-global-mode)
 
@@ -98,26 +98,26 @@
 ;; Files and mode
 (dolist (exp '("Rakefile\\'" "\\.rake\\'"))
   (add-to-list 'auto-mode-alist
-	       (cons exp 'ruby-mode)))
+               (cons exp 'ruby-mode)))
 
 (dolist (exp '("\\zshrc\\'" "\\bashrc\\'"))
   (add-to-list 'auto-mode-alist
-	       (cons exp 'ruby-mode)))
+               (cons exp 'ruby-mode)))
 
 (dolist (exp '("Cask\\'"))
   (add-to-list 'auto-mode-alist
-	       (cons exp 'emacs-lisp-mode)))
+               (cons exp 'emacs-lisp-mode)))
 
 (dolist (exp '("\\.hamlc\\'"))
   (add-to-list 'auto-mode-alist
-	       (cons exp 'haml-mode)))
+               (cons exp 'haml-mode)))
 
 (require 'web-mode)
 (dolist (exp '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.jsp\\'" "\\.as[cp]x\\'"
-	       "\\.erb\\'" "\\.html?\\'" "\\.mustache\\'" "\\.djhtml\\'"
-	       "\\.jsx\\'"))
+               "\\.erb\\'" "\\.html?\\'" "\\.mustache\\'" "\\.djhtml\\'"
+               "\\.jsx\\'"))
   (add-to-list 'auto-mode-alist
-	       (cons exp 'web-mode)))
+               (cons exp 'web-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flyspell
@@ -133,6 +133,12 @@
     (diminish 'flyspell-mode)))
 
 (mapcar (lambda (mode-hook) (add-hook mode-hook 'turn-on-flyspell-prog))
-	'(c-mode-common-hook tcl-mode-hook emacs-lisp-mode-hook
-	  ruby-mode-hook java-mode-hook clojure-mode-hook
-	  coffee-mode-hook haml-mode-hook web-mode-hook sass-mode-hook))
+        '(c-mode-common-hook tcl-mode-hook emacs-lisp-mode-hook
+          ruby-mode-hook java-mode-hook clojure-mode-hook
+          coffee-mode-hook haml-mode-hook web-mode-hook sass-mode-hook))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Magit
+
+(magit-auto-revert-mode)
+(diminish 'magit-auto-revert-mode "")

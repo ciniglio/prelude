@@ -25,6 +25,7 @@
  '(custom-safe-themes
    (quote
     ("f15a7ce08b9e13553c1f230678e9ceb5b372f8da26c9fb815eb20df3492253b7" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" default)))
+ '(deft-use-filename-as-title t)
  '(helm-adaptive-mode t nil (helm-adaptive))
  '(helm-mini-default-sources
    (quote

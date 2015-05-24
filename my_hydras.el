@@ -3,6 +3,7 @@
    "projectile"
    ("h" helm-mini "mini")
    ("p" helm-projectile "projects")
+   ("c" helm-circe "irc")
    ("f" helm-projectile-find-file-dwim "files"))
 
 (define-key projectile-mode-map [?\s-h] 'hydra-projectile/body)
