@@ -1,10 +1,11 @@
 (defhydra hydra-projectile
    (:color blue)
-   "projectile"
+   "projects and common tasks"
    ("h" helm-mini "mini")
    ("p" helm-projectile "projects")
-   ("c" helm-circe "irc")
-   ("f" helm-projectile-find-file-dwim "files"))
+   ("g" counsel-git-grep "grep")
+   ("f" helm-projectile-find-file-dwim "files")
+   ("c" helm-circe "irc"))
 
 (define-key projectile-mode-map [?\s-h] 'hydra-projectile/body)
 

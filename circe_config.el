@@ -1,5 +1,6 @@
 (setq my-credentials-file "~/.emacs.d/.private.el")
 (setq circe-reduce-lurker-spam t)
+(enable-circe-color-nicks)
 
 (unless (file-exists-p "~/.emacs.d/.private.el")
   (display-warning 'init "Missing credentials file .private.el"))

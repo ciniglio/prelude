@@ -152,6 +152,10 @@
 (diminish 'magit-auto-revert-mode "")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Counsel
+(require 'counsel)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Misc diminishes
 (defvar mode-line-cleaner-alist
   `(;; Major modes

@@ -32,6 +32,7 @@
     (helm-source-buffers-list helm-source-recentf helm-source-projectile-projects helm-source-buffer-not-found)))
  '(magit-default-tracking-name-function (quote magit-default-tracking-name-branch-only))
  '(ns-use-srgb-colorspace nil)
+ '(powerline-default-separator (quote contour))
  '(powerline-utf-8-separator-left 57520)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify)))
 
