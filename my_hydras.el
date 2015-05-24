@@ -7,8 +7,6 @@
    ("f" helm-projectile-find-file-dwim "files"))
 
 (define-key projectile-mode-map [?\s-h] 'hydra-projectile/body)
-(global-ace-isearch-mode +1)
-
 
 (defhydra hydra-hide-show
   (:color pink)

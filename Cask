@@ -3,7 +3,6 @@
 (source melpa)
 (source org)
 
-(depends-on "ace-isearch")
 (depends-on "ace-jump-buffer")
 (depends-on "ace-jump-mode")
 (depends-on "ace-window")

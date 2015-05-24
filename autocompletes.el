@@ -10,5 +10,5 @@
 (setq company-idle-delay .1)
 (setq company-tooltip-limit 10)
 (setq company-tooltip-flip-when-above t)
-(diminish 'company-mode " /c")
 (global-company-mode)
+(diminish 'company-mode " /c")
