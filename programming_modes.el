@@ -163,7 +163,9 @@
     (hi-lock-mode . "")
     (python-mode . "Py")
     (emacs-lisp-mode . "EL")
-    (nxhtml-mode . "nx"))
+    (nxhtml-mode . "nx")
+    (circe-mode . "irc")
+    (circe-channel-mode . "irc"))
   "Alist for `clean-mode-line'.
 When you add a new element to the alist, keep in mind that you
 must pass the correct minor/major mode symbol and a string you
