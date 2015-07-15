@@ -74,11 +74,10 @@
 
 (powerline-spacemacs-imitation-theme)
 ;; Theme
-(load-theme 'base16-tomorrow-dark t)
+(load-theme 'base16-eighties-dark t)
 
 ;; Set the color of the fringe
 (let ((background-color (face-attribute 'default :background)))
- (custom-set-faces
-  `(fringe ((t (:background ,background-color))))))
+  (set-face-background 'fringe background-color))
 
-(add-to-list 'default-frame-alist '(font . "Monaco-14"))
+(add-to-list 'default-frame-alist '(font . "Monaco-16"))

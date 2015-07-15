@@ -26,8 +26,8 @@
     (let ((case-fold-search isearch-case-fold-search))
       (occur (if isearch-regexp isearch-string (regexp-quote isearch-string))))))
 
-(global-set-key "\C-s" 'swiper)
-(global-set-key "\C-r" 'swiper)
+;; (global-set-key "\C-s" 'swiper)
+;; (global-set-key "\C-r" 'swiper)
 
 ;; Chords
 (key-chord-mode 1)

@@ -126,6 +126,9 @@
   (add-to-list 'auto-mode-alist
                (cons exp 'web-mode)))
 
+
+(add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flyspell
 (defun turn-on-flyspell ()
@@ -147,9 +150,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Magit
 (require 'magit)
-(magit-auto-revert-mode)
 (setq magit-last-seen-setup-instructions "1.4.0")
-(diminish 'magit-auto-revert-mode "")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Counsel
