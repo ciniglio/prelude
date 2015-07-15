@@ -6,6 +6,13 @@
 (require 'popwin)
 (popwin-mode 1)
 
+(setq popwin:special-display-config
+      (append
+       '(("*Helm Find Files*" :height 10)
+	 ("^\*helm.+\*$" :regexp t :height 20))
+       popwin:special-display-config))
+
+
 ;; automatically save buffers associated with files on buffer switch
 ;; and on windows switch
 (defun prelude-auto-save-command ()
