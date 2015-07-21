@@ -204,3 +204,7 @@ want to use in the modeline *in lieu of* the original.")
     (setq mode-line (concat mode-line flymake-mode-line-status))
     (setq flymake-mode-line mode-line)
     (force-mode-line-update)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Terminal Stuff
+(add-hook 'term-mode-hook (lambda() (setq yas-dont-activate t)))
