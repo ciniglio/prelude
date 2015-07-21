@@ -33,6 +33,7 @@
 (depends-on "git-commit")
 (depends-on "haml-mode")
 (depends-on "helm")
+(depends-on "helm-core")
 (depends-on "helm-dash")
 (depends-on "helm-git-grep")
 (depends-on "helm-projectile")

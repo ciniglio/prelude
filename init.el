@@ -28,10 +28,12 @@
  '(helm-adaptive-mode t nil (helm-adaptive))
  '(helm-mini-default-sources
    (quote
-    (helm-source-buffers-list helm-source-recentf helm-source-projectile-projects helm-source-buffer-not-found)))
+    (helm-source-buffers-list
+     helm-source-recentf
+     helm-source-projectile-projects
+     helm-source-buffer-not-found)))
  '(ido-use-faces t)
- '(magit-default-tracking-name-function (quote magit-default-tracking-name-branch-only))
- '(ns-use-srgb-colorspace nil)
+ '(ns-use-srgb-colorspace t)
  '(powerline-default-separator (quote contour))
  '(powerline-utf-8-separator-left 57520)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify)))

@@ -35,3 +35,7 @@
 (key-chord-define-global "jk" 'ace-jump-buffer)
 (key-chord-define-global "ww" 'ace-window)
 (key-chord-define-global "GG" 'magit-status)
+
+;; Help
+(global-set-key (kbd "C-h a") 'helm-apropos)
+

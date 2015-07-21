@@ -7,6 +7,7 @@
     (" P" (:eval (format "|%s|"
                          (projectile-project-name))))))
 
+(setq projectile-completion-system 'helm)
 (projectile-global-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -150,6 +151,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Magit
 (require 'magit)
+(setq magit-completing-read-function 'helm--completing-read-default)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
 
