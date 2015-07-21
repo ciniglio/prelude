@@ -65,6 +65,7 @@
 (depends-on "rainbow-identifiers")
 (depends-on "rainbow-mode")
 (depends-on "s")
+(depends-on "sane-term")
 (depends-on "sass-mode")
 (depends-on "shut-up")
 (depends-on "smartparens")

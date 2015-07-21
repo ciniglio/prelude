@@ -36,6 +36,9 @@
 (key-chord-define-global "ww" 'ace-window)
 (key-chord-define-global "GG" 'magit-status)
 
+;; Shells
+(global-set-key (kbd "M-m") 'sane-term)
+
 ;; Help
 (global-set-key (kbd "C-h a") 'helm-apropos)
 
