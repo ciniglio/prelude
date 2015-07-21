@@ -39,3 +39,7 @@
 ;; Help
 (global-set-key (kbd "C-h a") 'helm-apropos)
 
+;; Navigation
+(global-set-key [C-tab] 'other-window)
+(define-key ido-buffer-completion-map (kbd "C-n") 'ido-next-match)
+(define-key ido-buffer-completion-map (kbd "C-p") 'ido-prev-match)
