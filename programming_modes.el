@@ -1,26 +1,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Projectile
-(require 'projectile)
-
-(setq projectile-mode-line
-   (quote
-    (" P" (:eval (format "|%s|"
-                         (projectile-project-name))))))
-
-(setq projectile-completion-system 'helm)
-(projectile-global-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Whitespace mode
-;; automatically clean up bad whitespace
-(setq whitespace-action '(auto-cleanup))
-;; only show bad whitespace
-(setq whitespace-style '(face trailing space-before-tab tabs empty space-after-tab))
-;; enable
-(global-whitespace-mode 1)
-(diminish 'global-whitespace-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Coffee Mode
 (eval-after-load 'coffee-mode
   '(progn
@@ -153,7 +131,7 @@
 (require 'magit)
 (setq magit-completing-read-function 'helm--completing-read-default)
 (setq magit-last-seen-setup-instructions "1.4.0")
-
+(setq magit-push-always-verify nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Counsel
@@ -168,8 +146,9 @@
     (python-mode . "Py")
     (emacs-lisp-mode . "EL")
     (nxhtml-mode . "nx")
-    (circe-mode . "irc")
-    (circe-channel-mode . "irc"))
+    ;;    (circe-mode . "irc")
+    ;;    (circe-channel-mode . "irc")
+    )
   "Alist for `clean-mode-line'.
 When you add a new element to the alist, keep in mind that you
 must pass the correct minor/major mode symbol and a string you
@@ -207,4 +186,3 @@ want to use in the modeline *in lieu of* the original.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Terminal Stuff
-(add-hook 'term-mode-hook (lambda() (setq yas-dont-activate t)))

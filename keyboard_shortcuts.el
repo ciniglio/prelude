@@ -1,15 +1,3 @@
-;; M-x
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-m") 'helm-M-x)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-
-;; Projectile
-(define-key projectile-mode-map [?\s-d] 'projectile-find-dir)
-(define-key projectile-mode-map [?\s-p] 'projectile-switch-project)
-(define-key projectile-mode-map [?\s-f] 'projectile-find-file)
-(define-key projectile-mode-map [?\s-g] 'projectile-grep)
-(define-key projectile-mode-map [?\s-b] 'projectile-switch-to-buffer)
-
 ;; Magit
 (global-set-key (kbd "C-x g") 'magit-status)
 
@@ -26,9 +14,6 @@
     (let ((case-fold-search isearch-case-fold-search))
       (occur (if isearch-regexp isearch-string (regexp-quote isearch-string))))))
 
-;; (global-set-key "\C-s" 'swiper)
-;; (global-set-key "\C-r" 'swiper)
-
 ;; Chords
 (key-chord-mode 1)
 (key-chord-define-global "jj" 'ace-jump-word-mode)
@@ -36,13 +21,14 @@
 (key-chord-define-global "ww" 'ace-window)
 (key-chord-define-global "GG" 'magit-status)
 
-;; Shells
-(global-set-key (kbd "M-m") 'sane-term)
-
-;; Help
-(global-set-key (kbd "C-h a") 'helm-apropos)
-
 ;; Navigation
 (global-set-key [C-tab] 'other-window)
-(define-key ido-buffer-completion-map (kbd "C-n") 'ido-next-match)
-(define-key ido-buffer-completion-map (kbd "C-p") 'ido-prev-match)
+(global-set-key [C-S-tab] (lambda ()
+                            (interactive)
+                            (other-window -1)))
+(define-key magit-mode-map [C-tab] 'other-window)
+(define-key magit-mode-map [C-S-tab] (lambda ()
+                                       (interactive)
+                                       (other-window -1)))
+
+(global-set-key (kbd "C-c SPC") 'avy-goto-line)
