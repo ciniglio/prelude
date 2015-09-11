@@ -7,6 +7,8 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
+(cljr-add-keybindings-with-prefix "C-c C-m")
+
 ;; Search
 ;; Activate occur easily inside isearch
 (define-key isearch-mode-map (kbd "C-o")

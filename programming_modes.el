@@ -27,6 +27,7 @@
 (require 'smartparens-config)
 (require 'smartparens-ruby)
 (setq sp-base-key-bindings 'paredit)
+(define-key smartparens-mode-map (kbd "M-r") 'nil)
 (setq sp-autoskip-closing-pair 'always)
 (setq sp-hybrid-kill-entire-symbol nil)
 
@@ -36,9 +37,10 @@
 (sp-use-paredit-bindings)
 (show-smartparens-global-mode +1)
 (smartparens-global-mode +1)
+(diminish 'smartparens-mode)
 
 
-(dolist (x '(scheme emacs-lisp lisp clojure cider-repl))
+(dolist (x '(scheme emacs-lisp lisp))
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) '(lambda () (smartparens-strict-mode 1))))
 
 (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
@@ -70,11 +72,6 @@
 (add-hook 'web-mode-hook 'rainbow-mode)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Cider
-;;
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(setq cider-show-error-buffer 't)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Multiple cursors
@@ -106,8 +103,6 @@
                (cons exp 'web-mode)))
 
 
-(add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flyspell
 (defun turn-on-flyspell ()
@@ -123,13 +118,13 @@
 
 (mapcar (lambda (mode-hook) (add-hook mode-hook 'turn-on-flyspell-prog))
         '(c-mode-common-hook tcl-mode-hook emacs-lisp-mode-hook
-          ruby-mode-hook java-mode-hook clojure-mode-hook
+          ruby-mode-hook java-mode-hook
           coffee-mode-hook haml-mode-hook web-mode-hook sass-mode-hook))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Magit
 (require 'magit)
-(setq magit-completing-read-function 'helm--completing-read-default)
+
 (setq magit-last-seen-setup-instructions "1.4.0")
 (setq magit-push-always-verify nil)
 
@@ -146,6 +141,7 @@
     (python-mode . "Py")
     (emacs-lisp-mode . "EL")
     (nxhtml-mode . "nx")
+    (clojure-mode . "CLJ")
     ;;    (circe-mode . "irc")
     ;;    (circe-channel-mode . "irc")
     )
