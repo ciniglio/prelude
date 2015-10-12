@@ -7,16 +7,61 @@
 
 ;; Always prefer to load newer files, instead of giving precedence to
 ;; the .elc files.
-(setq load-prefer-newer t)
-(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
+;; (setq load-prefer-newer t)
+;; (byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
 
 (load "naked.el")
 (load "basics.el")
 (load "programming_modes.el")
 (load "keyboard_shortcuts.el")
-(load "gui.el")
+
+
+(setq-default dired-listing-switches "-alh")
+(set-default 'indent-tabs-mode nil) ;; no tabs
+(setq scroll-conservatively 101) ;; move minimum when cursor exits view, instead of recentering
+(setq mouse-wheel-scroll-amount '(1)) ;; mouse scroll moves 1 line at a time, instead of 5 lines
+(setq mouse-wheel-progressive-speed nil) ;; on a long mouse scroll keep scrolling by 1 line
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(coffee-tab-width 2)
+ '(custom-safe-themes
+   (quote
+    ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "f77b66fa762568d66fc00a5e2013aae76d78f0142669c55b7eb3c8e5d4d41e7d" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "0c311fb22e6197daba9123f43da98f273d2bfaeeaeb653007ad1ee77f0003037" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "f15a7ce08b9e13553c1f230678e9ceb5b372f8da26c9fb815eb20df3492253b7" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" default)))
+ '(deft-use-filename-as-title t)
+ '(global-company-mode t)
+ '(ido-use-faces t)
+ '(magit-completing-read-function (quote magit-builtin-completing-read))
+ '(ns-use-srgb-colorspace nil)
+ '(paradox-github-token t)
+ '(powerline-default-separator (quote contour))
+ '(powerline-utf-8-separator-left 57520)
+ '(sml/modified-char "!")
+ '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
+ '(web-mode-markup-indent-offset 2))
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(fringe ((t (:background "white"))))
+ '(hl-line ((t (:background "gray15"))))
+ '(hydra-face-blue ((t (:foreground "selectedMenuItemColor" :weight bold)))))
+
+(put 'downcase-region 'disabled nil)
 
 (require 'use-package)
+(use-package smart-mode-line
+  :config
+  (progn
+    (smart-mode-line-enable)
+    (sml/apply-theme 'smart-mode-line-respectful)))
+
+(load "gui.el")
 
 (use-package org
   :config (progn
@@ -86,8 +131,7 @@
             :init (flx-ido-mode 1))))
 
 (use-package helm
-  :config (progn
-            (require 'helm-config)
+  :config (progn (require 'helm-config)
             (setq helm-adaptive-mode t
                   helm-split-window-in-side-p t
                   completing-read-function 'helm--completing-read-default
@@ -114,37 +158,34 @@
             (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
             (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
             (define-key helm-map (kbd "C-z")  'helm-select-action)  ; list actions using C-z
-            (diminish 'helm-mode))
-  :init (progn
-          (with-eval-after-load 'helm-files
-            (define-key helm-read-file-map (kbd "<backspace>") 'helm-find-files-up-one-level)
-            (define-key helm-find-files-map (kbd "<backspace>") 'helm-find-files-up-one-level))
-         (use-package projectile
-           :requires (helm)
-           :config (progn
-                     (setq projectile-mode-line
-                           (quote
-                            (" P" (:eval (format "|%s|"
-                                                 (projectile-project-name))))))
-                     (setq projectile-completion-system 'helm)
-                     (define-key projectile-mode-map [?\s-d] 'projectile-find-dir)
-                     (define-key projectile-mode-map [?\s-p] 'projectile-switch-project)
-                     (define-key projectile-mode-map [?\s-f] 'projectile-find-file)
-                     (define-key projectile-mode-map [?\s-g] 'projectile-grep)
-                     (define-key projectile-mode-map [?\s-b] 'projectile-switch-to-buffer))
-           :init
-           (projectile-global-mode)
-           (helm-projectile-on)))
+            (with-eval-after-load 'helm-files
+              (define-key helm-read-file-map (kbd "<backspace>") 'helm-find-files-up-one-level)
+              (define-key helm-find-files-map (kbd "<backspace>") 'helm-find-files-up-one-level)))
   :bind (("M-x" . helm-M-x)
          ("C-x C-m" . helm-M-x)
          ("C-h a" . helm-apropos)
          ("M-i" . helm-imenu)
          ("C-x b" . helm-buffers-list)))
 
+(use-package projectile
+  :config (progn
+            (setq projectile-mode-line
+                  (quote
+                   (" P" (:eval (format "|%s|"
+                                        (projectile-project-name))))))
+            (setq projectile-completion-system 'helm)
+            (define-key projectile-mode-map [?\s-d] 'projectile-find-dir)
+            (define-key projectile-mode-map [?\s-p] 'projectile-switch-project)
+            (define-key projectile-mode-map [?\s-f] 'projectile-find-file)
+            (define-key projectile-mode-map [?\s-g] 'projectile-grep)
+            (define-key projectile-mode-map [?\s-b] 'projectile-switch-to-buffer))
+  :init
+  (projectile-global-mode)
+  (helm-projectile-on))
 
 (use-package hydra
-  :requires (helm projectile helm-projectile counsel key-chord)
-  :config (progn
+  :requires (helm projectile helm-projectile counsel key-chord magit)
+  :init (progn
             (defhydra hydra-projectile
               (:color blue)
               "projects and common tasks"
@@ -171,12 +212,33 @@
               ("h" helm-org-headlines "Org Headlines")
               ("m" helm-multi-occur "Multi-occur")
               ("o" helm-occur "Occur"))
+            (defhydra hydra-magit (:color teal :hint nil)
+               "
+                 Git: %(projectile-project-root)
+
+                 Immuting            Mutating
+                -----------------------------------------
+                  _b_: blame file      _c_: checkout
+                  _d_: diff            _B_: branch mgr
+                  _s_: status          _C_: commit
+                  _l_: log             _i_: rebase
+                  _t_: time machine "
+               ("b" magit-blame)
+               ("B" magit-branch-manager)
+               ("c" magit-checkout)
+               ("C" vc-next-action)
+               ("d" magit-diff-working-tree)
+               ("i" magit-interactive-rebase)
+               ("s" magit-status)
+               ("l" magit-log)
+               ("t" git-timemachine))
 
             (define-key projectile-mode-map [?\s-h] 'hydra-projectile/body)
-            (key-chord-define-global "hs" (lambda ()
+            (global-set-key (kbd "<f6>") (lambda ()
                                             (interactive)
                                             (hs-minor-mode t)
                                             (hydra-hide-show/body)))
+            (global-set-key (kbd "C-x g") 'hydra-magit/body)
             (global-set-key (kbd "<f2>") 'hydra-search/body)))
 
 (use-package sane-term
@@ -199,12 +261,6 @@
 
 (use-package diff-hl
   :config (diff-hl-mode))
-
-(use-package smart-mode-line
-  :config
-  (progn
-    (smart-mode-line-enable)
-    (sml/apply-theme 'smart-mode-line-respectful)))
 
 (use-package org
   :config (setq org-directory "~/Documents/org/"
@@ -340,37 +396,3 @@
   :config (progn
             (diminish 'eyebrowse-mode)
             (eyebrowse-mode)))
-
-(setq-default dired-listing-switches "-alh")
-(set-default 'indent-tabs-mode nil)
-;; (use-package ansi-term
-;;   :init (message "Using ansi term"))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(coffee-tab-width 2)
- '(deft-use-filename-as-title t)
- '(global-company-mode t)
- '(helm-projectile-sources-list
-   (quote
-    (helm-source-projectile-buffers-list helm-source-projectile-recentf-list helm-source-projectile-files-list helm-source-projectile-projects)))
- '(ido-use-faces t)
- '(ns-use-srgb-colorspace nil)
- '(powerline-default-separator (quote contour))
- '(powerline-utf-8-separator-left 57520)
- '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
- '(web-mode-markup-indent-offset 2))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(hl-line ((t (:background "gray15"))))
- '(hydra-face-blue ((t (:foreground "selectedMenuItemColor" :weight bold)))))
-
-(setenv "BOOT_JVM_OPTIONS" "");"-XX:MaxPermSize=512M")
-(put 'downcase-region 'disabled nil)

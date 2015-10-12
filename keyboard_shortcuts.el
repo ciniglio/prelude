@@ -18,8 +18,8 @@
 
 ;; Chords
 (key-chord-mode 1)
-(key-chord-define-global "jj" 'ace-jump-word-mode)
-(key-chord-define-global "jk" 'ace-jump-buffer)
+(key-chord-define-global "jj" 'avy-goto-line)
+(key-chord-define-global "jk" 'avy-goto-char)
 (key-chord-define-global "ww" 'ace-window)
 (key-chord-define-global "GG" 'magit-status)
 
@@ -34,3 +34,4 @@
                                        (other-window -1)))
 
 (global-set-key (kbd "C-c SPC") 'avy-goto-line)
+(global-set-key (kbd "C-x k") 'bury-buffer)
