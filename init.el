@@ -12,46 +12,13 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(use-package use-package-chords
-  :ensure t
-  :config (key-chord-mode 1))
-
-;;; Customization
-(defconst aec-custom-file (locate-user-emacs-file "custom.el")
-  "File used to store settings from Customization UI.")
-
-(use-package cus-edit
-  :defer t
-  :config
-  (setq custom-file aec-custom-file
-        custom-buffer-done-kill nil            ; Kill when existing
-        custom-buffer-verbose-help nil         ; Remove redundant help text
-        ;; Show me the real variable name
-        custom-unlispify-tag-names nil
-        custom-unlispify-menu-entries nil)
-  :init (load aec-custom-file 'no-error 'no-message))
-
-;;; Autosave files
-;; Save all tempfiles in $TMPDIR/emacs$UID/
-(defconst emacs-tmp-dir (format "%s/%s%s/" temporary-file-directory "emacs" (user-uid)))
-(setq backup-directory-alist
-      `((".*" . ,emacs-tmp-dir)))
-(setq auto-save-file-name-transforms
-      `((".*" ,emacs-tmp-dir t)))
-(setq auto-save-list-file-prefix emacs-tmp-dir)
-
-;; Scrolling
-(setq scroll-conservatively 10000
-      scroll-preserve-screen-position t)
+(use-package aec-essentials :load-path "lisp/")
+(use-package aec-custom :load-path "lisp/")
+(use-package aec-backup :load-path "lisp/")
 
 (use-package ciniglio-site-lisp
   :if (file-exists-p "~/.ciniglio-site-specific/site-lisp")
   :load-path "~/.ciniglio-site-specific/site-lisp/")
-
-(blink-cursor-mode 0)
-(setq ring-bell-function #'ignore
-      inhibit-startup-screen t)
-(fset 'yes-or-no-p #'y-or-n-p)
 
 (use-package company
   :ensure t
@@ -71,8 +38,7 @@
 
 (use-package vc-hooks
   :defer t
-  :config
-  (setq vc-follow-symlinks t))
+  :config (setq vc-follow-symlinks t))
 
 (use-package helm
   :ensure t
@@ -238,12 +204,6 @@
 (use-package menu-bar-mode
   :init (menu-bar-mode -1))
 
-(setq inhibit-startup-screen t)
-(scroll-bar-mode -1)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(setq-default indent-tabs-mode nil)
-
 (use-package rainbow-mode
   :ensure t
   :diminish rainbow-mode
@@ -255,7 +215,18 @@
 
 (use-package helm-swoop
   :ensure t
-  :bind (([remap isearch-forward] . helm-swoop)))
+  :bind (([remap isearch-forward] . helm-swoop))
+  :config (progn
+            (setq helm-swoop-pre-input-function
+                  (lambda () ""))
+            
+            (defun ciniglio/helm-swoop-last-query ()
+              "Use the last query as the input"
+              (interactive)
+              (with-selected-window (minibuffer-window)
+                (delete-minibuffer-contents)
+                (insert helm-swoop-last-query)))
+            (bind-key "C-s" 'ciniglio/helm-swoop-last-query helm-swoop-map)))
 
 (use-package focus-autosave-mode
   :ensure t
@@ -274,7 +245,8 @@
          (setq sane-term-shell-command "/bin/zsh")
          (add-hook 'term-mode-hook
                    (lambda()
-                     (setq yas-dont-activate t))))
+                     (setq yas-dont-activate t
+                           term-buffer-maximum-size 10000))))
   :config (progn
             (defun my/sane-term (arg)
               (interactive "P")
@@ -283,30 +255,7 @@
                 (sane-term))))
   :bind (("M-m" . my/sane-term)))
 
-;; automatically save buffers associated with files on buffer switch
-;; and on windows switch
-(defun prelude-auto-save-command ()
-  "Save the current buffer."
-  (when (and buffer-file-name
-             (buffer-modified-p (current-buffer))
-             (file-writable-p buffer-file-name))
-    (save-buffer)))
-
-(defmacro advise-commands (advice-name commands &rest body)
-  "Apply advice named ADVICE-NAME to multiple COMMANDS.
-The body of the advice is in BODY."
-  `(progn
-     ,@(mapcar (lambda (command)
-                 `(defadvice ,command (before ,(intern (concat (symbol-name command) "-" advice-name)) activate)
-                    ,@body))
-               commands)))
-
-;; advise all window switching functions
-(advise-commands "auto-save"
-                 (switch-to-buffer other-window windmove-up windmove-down windmove-left windmove-right)
-                 (prelude-auto-save-command))
-
-(add-hook 'mouse-leave-buffer-hook 'prelude-auto-save-command)
+(use-package aec-autosave :load-path "lisp/")
 
 (use-package savehist
   :init (savehist-mode t)
@@ -324,4 +273,15 @@ The body of the advice is in BODY."
          ("C-<" . mc/mark-previous-like-this)))
 
 (use-package compile
-  :config (setq compilation-scroll-output t))
+  :config (progn
+            (setq compilation-scroll-output t)
+
+            (defun aec-switch-to-compilation-buffer ()
+              (interactive)
+              (switch-to-buffer "*compilation*"))
+            (bind-key "<f5>" (defhydra aec-compile (:color blue)
+                               "Compilation"
+                               ("b" aec-switch-to-compilation-buffer "buffer")
+                               ("<f5>" recompile "recompile")))))
+
+(google3-build)
