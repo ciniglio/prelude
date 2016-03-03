@@ -241,18 +241,19 @@
 (use-package sane-term
   :ensure t
   :init (progn
-         (message "Using sane term")
-         (setq sane-term-shell-command "/bin/zsh")
-         (add-hook 'term-mode-hook
-                   (lambda()
-                     (setq yas-dont-activate t
-                           term-buffer-maximum-size 10000))))
+          (setq sane-term-shell-command "/bin/zsh")
+          (add-hook 'term-mode-hook
+                    (lambda()
+                      (setq yas-dont-activate t
+                            term-buffer-maximum-size 10000))))
   :config (progn
             (defun my/sane-term (arg)
               (interactive "P")
               (if arg
                   (sane-term-create)
-                (sane-term))))
+                (sane-term)))
+            (bind-key "M-m" 'my/sane-term term-mode-map)
+            (bind-key "M-m" 'my/sane-term term-raw-map))
   :bind (("M-m" . my/sane-term)))
 
 (use-package aec-autosave :load-path "lisp/")
@@ -284,4 +285,7 @@
                                ("b" aec-switch-to-compilation-buffer "buffer")
                                ("<f5>" recompile "recompile")))))
 
-(google3-build)
+(use-package java-mode
+  :init (add-hook 'java-mode-hook
+                    (lambda ()
+                      (subword-mode))))
