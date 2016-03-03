@@ -275,7 +275,6 @@
 (use-package compile
   :config (progn
             (setq compilation-scroll-output t)
-
             (defun aec-switch-to-compilation-buffer ()
               (interactive)
               (switch-to-buffer "*compilation*"))
@@ -284,4 +283,10 @@
                                ("b" aec-switch-to-compilation-buffer "buffer")
                                ("<f5>" recompile "recompile")))))
 
-(google3-build)
+(use-package tide
+  :ensure t
+  :config (progn (setq typescript-indent-level 2)
+                 (setq tide-tsserver-directory
+                       (concat "/google/src/head/depot/google3"
+                               "/third_party/javascript/node_modules"
+                               "/typescript/stable/lib"))))
