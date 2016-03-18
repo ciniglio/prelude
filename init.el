@@ -304,7 +304,9 @@
 (use-package multiple-cursors
   :ensure t
   :bind (("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)))
+         ("M-3" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("M-4" . mc/mark-previous-like-this)))
 
 (use-package compile
   :config (progn
@@ -317,15 +319,10 @@
                                ("b" aec-switch-to-compilation-buffer "buffer")
                                ("<f5>" recompile "recompile")))))
 
-(use-package tide
-  :ensure t
-  :config (progn (setq typescript-indent-level 2)
-                 (setq tide-tsserver-directory
-                       (concat "/google/src/head/depot/google3"
-                               "/third_party/javascript/node_modules"
-                               "/typescript/stable/lib"))))
-
 (use-package java-mode
   :init (add-hook 'java-mode-hook
                     (lambda ()
                       (subword-mode))))
+
+(use-package delete-selection-mode
+  :init (delete-selection-mode 1))
