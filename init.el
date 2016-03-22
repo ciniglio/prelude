@@ -47,9 +47,9 @@
   :config (progn
 	    (setq helm-split-window-in-side-p t)
 	    (set-face-attribute 'helm-selection-line nil
-				:background "brightmagenta")
+				:background "#ba55d3")
 	    (set-face-attribute 'helm-selection nil
-				:background "brightmagenta")
+				:background "#ba55d3")
             (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
             (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
             (define-key helm-map (kbd "C-z")  'helm-select-action))
@@ -277,16 +277,16 @@
                         ;; ansi-term colors
                         (setq ansi-term-color-vector
                               [term term-color-black term-color-red term-color-green term-color-yellow 
-                                    term-color-blue term-color-magenta term-color-cyan term-color-white]))
+                                    term-color-blue term-color-magenta term-color-cyan term-color-white])
+                        (bind-key "M-m" 'my/sane-term term-mode-map)
+                        (bind-key "M-m" 'my/sane-term term-raw-map))
 )))
   :config (progn
             (defun my/sane-term (arg)
               (interactive "P")
               (if arg
                   (sane-term-create)
-                (sane-term)))
-            (bind-key "M-m" 'my/sane-term term-mode-map)
-            (bind-key "M-m" 'my/sane-term term-raw-map))
+                (sane-term))))
   :bind (("M-m" . my/sane-term)))
 
 (use-package aec-autosave :load-path "lisp/")
@@ -320,9 +320,14 @@
                                ("<f5>" recompile "recompile")))))
 
 (use-package java-mode
+  :defer t
   :init (add-hook 'java-mode-hook
                     (lambda ()
                       (subword-mode))))
 
 (use-package delete-selection-mode
   :init (delete-selection-mode 1))
+
+(use-package fringe
+  :config (set-face-attribute 'fringe nil
+                              :background (face-background 'default)))
