@@ -215,10 +215,12 @@
 
 (use-package helm-swoop
   :ensure t
-  :bind (([remap isearch-forward] . helm-swoop))
+  :after helm
+  :bind (("C-c s s" . helm-swoop))
   :config (progn
-            (setq helm-swoop-pre-input-function
-                  (lambda () ""))
+            (setq helm-swoop-pre-input-function (lambda () "")
+                  helm-swoop-speed-or-color t
+                  helm-swoop-split-window-function #'helm-default-display-buffer)
             
             (defun ciniglio/helm-swoop-last-query ()
               "Use the last query as the input"
@@ -331,3 +333,12 @@
 (use-package fringe
   :config (set-face-attribute 'fringe nil
                               :background (face-background 'default)))
+
+(use-package org
+  :ensure t)
+
+(use-package helm-org-rifle
+  :ensure t)
+
+(use-package helm-orgcard
+  :ensure t)
