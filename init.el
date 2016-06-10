@@ -42,7 +42,8 @@
 
 (use-package helm
   :ensure t
-  :bind (("C-c c b" . helm-resume))
+  :bind (("C-c h r" . helm-resume)
+         ("C-c h i" . helm-imenu))
   :init (helm-mode 1)
   :config (progn
 	    (setq helm-split-window-in-side-p t)
@@ -300,7 +301,10 @@
 
 (use-package which-key
   :ensure t
-  :config (which-key-mode)
+  :config (progn
+            (setq which-key-idle-delay 2.0
+                  which-key-idle-secondary-delay 0.0)
+            (which-key-mode))
   :diminish which-key-mode)
 
 (use-package multiple-cursors
@@ -335,10 +339,105 @@
                               :background (face-background 'default)))
 
 (use-package org
-  :ensure t)
+  :ensure t
+  :config (setq org-replace-disputed-keys t
+                org-startup-folded nil
+                org-startup-truncated nil))
 
 (use-package helm-org-rifle
   :ensure t)
 
 (use-package helm-orgcard
   :ensure t)
+
+(use-package persp-mode
+  :ensure t)
+
+(use-package bm
+  :ensure t
+  :config
+  (progn
+    (setq-default bm-buffer-persistence t) ; buffer persistence on by default
+
+    (when bm-buffer-persistence
+      (setq bm-repository-file (locate-user-emacs-file "bm-repository"))
+
+      ;; Load bm repository
+      (when (file-exists-p bm-repository-file)
+        (bm-repository-load))
+
+      ;; Saving bookmarks
+      (add-hook 'kill-buffer-hook #'bm-buffer-save)
+      ;; Saving the repository to file when on exit.
+      ;; kill-buffer-hook is not called when Emacs is killed, so we
+      ;; must save all bookmarks first.
+      (defun aec/bm-save-all-bm-to-repository ()
+        (bm-buffer-save-all)
+        (bm-repository-save))
+      (add-hook 'kill-emacs-hook #'aec/bm-save-all-bm-to-repository)
+      (add-hook 'after-save-hook #'bm-buffer-save)
+      ;; The `after-save-hook' is not necessary to use to achieve persistence,
+      ;; but it makes the bookmark data in repository more in sync with the file
+      ;; state.
+
+      ;; Restoring bookmarks
+      (add-hook 'find-file-hooks   #'bm-buffer-restore)
+      (add-hook 'after-revert-hook #'bm-buffer-restore)
+      ;; The `after-revert-hook' is not necessary to use to achieve persistence,
+      ;; but it makes the bookmark data in repository more in sync with the file
+      ;; state. This hook might cause trouble when using packages
+      ;; that automatically reverts the buffer (like vc after a check-in).
+      ;; This can easily be avoided if the package provides a hook that is
+      ;; called before the buffer is reverted (like `vc-before-checkin-hook').
+      ;; Then new bookmarks can be saved before the buffer is reverted.
+      ;; Make sure bookmarks is saved before check-in (and revert-buffer)
+      (add-hook 'vc-before-checkin-hook #'bm-buffer-save))
+
+    (when (display-graphic-p) ; Add fringe only if display is graphic (GUI)
+      (define-fringe-bitmap 'bm-marker-left [#xF8    ; ▮ ▮ ▮ ▮ ▮ 0 0 0
+                                             #xFC    ; ▮ ▮ ▮ ▮ ▮ ▮ 0 0
+                                             #xFE    ; ▮ ▮ ▮ ▮ ▮ ▮ ▮ 0
+                                             #x0F    ; 0 0 0 0 ▮ ▮ ▮ ▮
+                                             #x0F    ; 0 0 0 0 ▮ ▮ ▮ ▮
+                                             #xFE    ; ▮ ▮ ▮ ▮ ▮ ▮ ▮ 0
+                                             #xFC    ; ▮ ▮ ▮ ▮ ▮ ▮ 0 0
+                                             #xF8])) ; ▮ ▮ ▮ ▮ ▮ 0 0 0
+
+    (setq bm-highlight-style 'bm-highlight-only-fringe)
+    (setq bm-cycle-all-buffers t) ; search all open buffers for bookmarks
+
+    (defun aec/bm-bookmark-regexp ()
+      (interactive)
+      (if (use-region-p)
+          (progn
+            (bm-bookmark-regexp-region (region-beginning) (region-end))
+            (deactivate-mark))
+        (bm-bookmark-regexp)))
+
+    (defhydra hydra-bm (:color pink
+                        :hint nil
+                        :body-pre (when (not (use-region-p)) (push-mark)))
+      "
+Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm lines matching regexp                          toggle per_s_istence
+         _p_revious (_P_ in lifo order)        _a_nnotate               _x_/_X_ remove all bm from current/all buffer(s)        _r_eturn to from where you started
+    "
+      ("m"   bm-toggle)
+      ("M"   bm-toggle :color blue)
+      ("a"   bm-bookmark-annotate :color blue)
+      ("n"   bm-common-next)
+      ("N"   bm-lifo-next)
+      ("p"   bm-common-previous)
+      ("P"   bm-lifo-previous)
+      ("/"   aec/bm-bookmark-regexp :color blue)
+      ("s"   bm-toggle-buffer-persistence)
+      ("x"   bm-remove-all-current-buffer :color blue)
+      ("X"   bm-remove-all-all-buffers :color blue)
+      ("r"   pop-to-mark-command :color blue)
+      ("RET" nil "cancel" :color blue)
+      ("q"   nil "cancel" :color blue))))
+
+(use-package aec-utils :load-path "lisp/")
+
+(use-package aec-idle
+  :load-path "lisp/"
+  :config (aec-run-then-reschedule-in 600 'recentf-save-list))
