@@ -4,6 +4,7 @@
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 
 (package-initialize)
 
@@ -43,7 +44,7 @@
 (use-package helm
   :ensure t
   :bind (("C-c h r" . helm-resume)
-         ("C-c h i" . helm-imenu))
+         ("C-c h i" . helm-semantic-or-imenu))
   :init (helm-mode 1)
   :config (progn
 	    (setq helm-split-window-in-side-p t)
@@ -53,7 +54,9 @@
 				:background "#ba55d3")
             (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
             (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-            (define-key helm-map (kbd "C-z")  'helm-select-action))
+            (define-key helm-map (kbd "C-z") 'helm-select-action)
+            (define-key helm-map (kbd "M-n") 'helm-next-source)
+            (define-key helm-map (kbd "M-p") 'helm-previous-source))
   :diminish helm-mode)
 
 (use-package helm-misc
@@ -77,6 +80,22 @@
   :bind (([remap execute-extended-command] . helm-M-x)
 	 ("C-x C-m" . helm-M-x)))
 
+(use-package projectile
+  :ensure t
+  :init (projectile-global-mode)
+  :config 
+  (progn 
+    (run-with-idle-timer 10 nil #'projectile-cleanup-known-projects)
+    (setq projectile-completion-system 'helm
+	  projectile-find-dir-includes-top-level t))
+  :diminish projectile-mode)
+
+(use-package helm-projectile
+  :ensure t
+  :init 
+  (add-to-list 'helm-mini-default-sources 'helm-source-projectile-recentf-list)
+  (add-to-list 'helm-mini-default-sources 'helm-source-projectile-buffers-list))
+
 (use-package helm-files
   :ensure helm
   :defer t
@@ -87,6 +106,27 @@
 		  helm-ff-file-name-history-use-recentf t)
             (define-key helm-read-file-map (kbd "<backspace>") 'helm-find-files-up-one-level)
             (define-key helm-find-files-map (kbd "<backspace>") 'helm-find-files-up-one-level)))
+
+(use-package helm-ring
+  :ensure helm
+  :bind (([remap yank-pop] . helm-show-kill-ring)))
+
+(use-package helm-swoop
+  :ensure t
+  :after helm
+  :bind (("C-c s s" . helm-swoop))
+  :config (progn
+            (setq helm-swoop-pre-input-function (lambda () "")
+                  helm-swoop-speed-or-color t
+                  helm-swoop-split-window-function #'helm-default-display-buffer)
+            
+            (defun ciniglio/helm-swoop-last-query ()
+              "Use the last query as the input"
+              (interactive)
+              (with-selected-window (minibuffer-window)
+                (delete-minibuffer-contents)
+                (insert helm-swoop-last-query)))
+            (bind-key "C-s" 'ciniglio/helm-swoop-last-query helm-swoop-map)))
 
 (use-package recentf
   :init (recentf-mode)
@@ -100,17 +140,7 @@
   :ensure avy
   :bind (("C-c j" . avy-goto-word-1)
 	 ("C-c l" . avy-goto-line)
-	 ("C-c n b" . avy-pop-mark)))
-
-(use-package projectile
-  :ensure t
-  :init (projectile-global-mode)
-  :config 
-  (progn 
-    (run-with-idle-timer 10 nil #'projectile-cleanup-known-projects)
-    (setq projectile-completion-system 'helm
-	  projectile-find-dir-includes-top-level t))
-  :diminish projectile-mode)
+         ("C-c n b" . avy-pop-mark)))
 
 (use-package uniquify
   :config (setq uniquify-buffer-name-style 'forward))
@@ -135,14 +165,10 @@
 
 (use-package windmove
   :init (windmove-default-keybindings)
-  :bind (("C-<tab>" . windmove-right)))
+  :bind (("C-<tab>" . other-window)))
 
 (setq indicate-empty-lines t
       require-final-newline t)
-
-(use-package helm-ring
-  :ensure helm
-  :bind (([remap yank-pop] . helm-show-kill-ring)))
 
 (use-package smartparens
   :ensure t
@@ -202,8 +228,7 @@
   :init (dolist (hook '(text-mode-hook prog-mode-hook))
 	  (add-hook hook #'column-number-mode)))
 
-(use-package menu-bar-mode
-  :init (menu-bar-mode -1))
+(menu-bar-mode -1)
 
 (use-package rainbow-mode
   :ensure t
@@ -213,23 +238,6 @@
                           html-mode-hook
                           web-mode-hook))
             (add-hook hook #'rainbow-mode)))
-
-(use-package helm-swoop
-  :ensure t
-  :after helm
-  :bind (("C-c s s" . helm-swoop))
-  :config (progn
-            (setq helm-swoop-pre-input-function (lambda () "")
-                  helm-swoop-speed-or-color t
-                  helm-swoop-split-window-function #'helm-default-display-buffer)
-            
-            (defun ciniglio/helm-swoop-last-query ()
-              "Use the last query as the input"
-              (interactive)
-              (with-selected-window (minibuffer-window)
-                (delete-minibuffer-contents)
-                (insert helm-swoop-last-query)))
-            (bind-key "C-s" 'ciniglio/helm-swoop-last-query helm-swoop-map)))
 
 (use-package focus-autosave-mode
   :ensure t
@@ -282,7 +290,9 @@
                               [term term-color-black term-color-red term-color-green term-color-yellow 
                                     term-color-blue term-color-magenta term-color-cyan term-color-white])
                         (bind-key "M-m" 'my/sane-term term-mode-map)
-                        (bind-key "M-m" 'my/sane-term term-raw-map))
+                        (bind-key "M-m" 'my/sane-term term-raw-map)
+                        (bind-key "s-k" 'erase-buffer term-mode-map)
+                        (bind-key "s-k" 'erase-buffer term-raw-map))
 )))
   :config (progn
             (defun my/sane-term (arg)
@@ -302,7 +312,7 @@
 (use-package which-key
   :ensure t
   :config (progn
-            (setq which-key-idle-delay 2.0
+            (setq which-key-idle-delay 1.0
                   which-key-idle-secondary-delay 0.0)
             (which-key-mode))
   :diminish which-key-mode)
@@ -312,7 +322,10 @@
   :bind (("C->" . mc/mark-next-like-this)
          ("M-3" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
-         ("M-4" . mc/mark-previous-like-this)))
+         ("M-4" . mc/mark-previous-like-this))
+  :bind (:map mc/keymap
+              ("<return>" . multiple-cursors-mode)
+              ("RET" . multiple-cursors-mode)))
 
 (use-package compile
   :config (progn
@@ -320,26 +333,25 @@
             (defun aec-switch-to-compilation-buffer ()
               (interactive)
               (switch-to-buffer "*compilation*"))
-            (bind-key "<f5>" (defhydra aec-compile (:color blue)
-                               "Compilation"
-                               ("b" aec-switch-to-compilation-buffer "buffer")
-                               ("<f5>" recompile "recompile")))))
+            (bind-key "<f5>"
+                      (defhydra aec-compile (:color blue)
+                        "Compilation"
+                        ("b" aec-switch-to-compilation-buffer "buffer")
+                        ("<f5>" recompile "recompile")))))
 
 (use-package java-mode
   :defer t
-  :init (add-hook 'java-mode-hook
-                    (lambda ()
-                      (subword-mode))))
+  :init (add-hook 'java-mode-hook (lambda () (subword-mode))))
 
-(use-package delete-selection-mode
-  :init (delete-selection-mode 1))
+(delete-selection-mode 1)
 
 (use-package fringe
   :config (set-face-attribute 'fringe nil
                               :background (face-background 'default)))
 
-(use-package org
+(use-package org-plus-contrib
   :ensure t
+  :pin org
   :config (setq org-replace-disputed-keys t
                 org-startup-folded nil
                 org-startup-truncated nil))
@@ -350,11 +362,9 @@
 (use-package helm-orgcard
   :ensure t)
 
-(use-package persp-mode
-  :ensure t)
-
 (use-package bm
   :ensure t
+  :bind (("C-c b" . hydra-bm/body))
   :config
   (progn
     (setq-default bm-buffer-persistence t) ; buffer persistence on by default
@@ -418,7 +428,7 @@
                         :hint nil
                         :body-pre (when (not (use-region-p)) (push-mark)))
       "
-Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm lines matching regexp                          toggle per_s_istence
+Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm lines matching regexp                          toggle per_s_istence                 _l_ist bookmarks
          _p_revious (_P_ in lifo order)        _a_nnotate               _x_/_X_ remove all bm from current/all buffer(s)        _r_eturn to from where you started
     "
       ("m"   bm-toggle)
@@ -433,11 +443,16 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
       ("x"   bm-remove-all-current-buffer :color blue)
       ("X"   bm-remove-all-all-buffers :color blue)
       ("r"   pop-to-mark-command :color blue)
+      ("l"   helm-bm :color blue)
       ("RET" nil "cancel" :color blue)
       ("q"   nil "cancel" :color blue))))
+
+(use-package helm-bm
+  :ensure t)
 
 (use-package aec-utils :load-path "lisp/")
 
 (use-package aec-idle
   :load-path "lisp/"
   :config (aec-run-then-reschedule-in 600 'recentf-save-list))
+(put 'erase-buffer 'disabled nil)
