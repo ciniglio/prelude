@@ -80,6 +80,15 @@
   :bind (([remap execute-extended-command] . helm-M-x)
 	 ("C-x C-m" . helm-M-x)))
 
+(use-package magit
+  :ensure t
+  :init (progn (magit-wip-after-save-mode)
+	       (magit-wip-after-apply-mode))
+  :chords (("GG" . magit-status)))
+
+(use-package git-timemachine
+  :ensure t)
+
 (use-package projectile
   :ensure t
   :init (projectile-global-mode)
@@ -87,7 +96,8 @@
   (progn 
     (run-with-idle-timer 10 nil #'projectile-cleanup-known-projects)
     (setq projectile-completion-system 'helm
-	  projectile-find-dir-includes-top-level t))
+	  projectile-find-dir-includes-top-level t
+          projectile-switch-project-action 'magit-status))
   :diminish projectile-mode)
 
 (use-package helm-projectile
@@ -197,15 +207,6 @@
   :defer t
   :mode "\\.\\(html\\|soy\\|jsx\\|xmb\\)\\'"
   :config (setq web-mode-markup-indent-offset 2))
-
-(use-package magit
-  :ensure t
-  :init (progn (magit-wip-after-save-mode)
-	       (magit-wip-after-apply-mode))
-  :chords (("GG" . magit-status)))
-
-(use-package git-timemachine
-  :ensure t)
 
 (use-package ibuffer
   :bind (([remap list-buffers] . ibuffer)
@@ -456,3 +457,7 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
   :load-path "lisp/"
   :config (aec-run-then-reschedule-in 600 'recentf-save-list))
 (put 'erase-buffer 'disabled nil)
+
+(use-package undo-tree
+  :ensure t
+  :bind (([remap undo] . undo-tree-visualize)))
