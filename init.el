@@ -187,7 +187,14 @@
 
 (use-package apropospriate-theme
   :ensure t
-  :config (load-theme 'apropospriate-dark))
+  :config  (load-theme 'apropospriate-dark))
+
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (run-at-time "2 sec" nil
+                         (lambda ()
+                           (set-face-attribute 'fringe nil
+                                               :background (face-background 'default))))))
 
 (use-package smart-mode-line
   :ensure t
@@ -329,10 +336,6 @@
 
 (use-package delete-selection-mode
   :init (delete-selection-mode 1))
-
-(use-package fringe
-  :config (set-face-attribute 'fringe nil
-                              :background (face-background 'default)))
 
 (use-package org
   :ensure t)
