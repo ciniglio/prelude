@@ -469,4 +469,3 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
   :load-path "lisp/"
   :bind (("s-b" . aec/switch-to-previous-buffer )))
 
-(use-package tuareg
