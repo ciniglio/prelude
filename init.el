@@ -464,3 +464,9 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
 (use-package undo-tree
   :ensure t
   :bind (([remap undo] . undo-tree-visualize)))
+
+(use-package aec-buffers
+  :load-path "lisp/"
+  :bind (("s-b" . aec/switch-to-previous-buffer )))
+
+(use-package tuareg
