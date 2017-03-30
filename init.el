@@ -102,9 +102,10 @@
 
 (use-package helm-projectile
   :ensure t
-  :init 
-  (add-to-list 'helm-mini-default-sources 'helm-source-projectile-recentf-list)
-  (add-to-list 'helm-mini-default-sources 'helm-source-projectile-buffers-list))
+  :init (progn
+          (add-to-list 'helm-mini-default-sources 'helm-source-projectile-recentf-list)
+          (add-to-list 'helm-mini-default-sources 'helm-source-projectile-buffers-list))
+  :bind (([remap projectile-find-file] . helm-projectile-find-file)))
 
 (use-package helm-files
   :ensure helm
@@ -461,3 +462,10 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
 (use-package undo-tree
   :ensure t
   :bind (([remap undo] . undo-tree-visualize)))
+
+(use-package rcirc
+  :config (progn (setq rcirc-server-alist
+                       '(("irc.freenode.net"
+                          :channels ("##programming" "#clojure" "#ocaml" "#lobsters" "#emacs"))
+                         ("irc.mozilla.org"
+                           :channels ("#rust-beginners" "#rust"))))))
