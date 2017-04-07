@@ -101,10 +101,11 @@
   :diminish projectile-mode)
 
 (use-package helm-projectile
+  :demand
   :ensure t
   :init (progn
-          (add-to-list 'helm-mini-default-sources 'helm-source-projectile-recentf-list)
-          (add-to-list 'helm-mini-default-sources 'helm-source-projectile-buffers-list))
+            (add-to-list 'helm-mini-default-sources 'helm-source-projectile-recentf-list)
+            (add-to-list 'helm-mini-default-sources 'helm-source-projectile-buffers-list))
   :bind (([remap projectile-find-file] . helm-projectile-find-file)))
 
 (use-package helm-files
@@ -471,7 +472,8 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
                        '(("irc.freenode.net"
                           :channels ("##programming" "#clojure" "#ocaml" "#lobsters" "#emacs"))
                          ("irc.mozilla.org"
-                           :channels ("#rust-beginners" "#rust"))))))
+                          :channels ("#rust-beginners" "#rust"))))
+                 (add-hook 'rcirc-mode-hook (lambda () (rcirc-omit-mode)))))
 
 (use-package aec-buffers
   :load-path "lisp/"

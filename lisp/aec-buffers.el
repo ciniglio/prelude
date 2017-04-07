@@ -1,5 +1,5 @@
 ;;; Functions for interacting with buffers
-
+(require 'cl)
 (defun aec/switch-to-previous-buffer ()
   "Switch to previously open buffer.
 Repeated invocations toggle between the two most recently open buffers."
