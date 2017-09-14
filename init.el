@@ -221,7 +221,7 @@
 
 (add-hook 'after-make-frame-functions
           (lambda (frame)
-            (run-at-time "2 sec" nil
+            (run-at-time "1 sec" nil
                          (lambda ()
                            (set-face-attribute 'fringe nil
                                                :background (face-background 'default))))))

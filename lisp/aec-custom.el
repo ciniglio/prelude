@@ -33,6 +33,9 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (when (display-graphic-p)
-   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+
+;; Better fonts
+(set-frame-font "Monaco-14" t t)
 
 (provide 'aec-custom)
