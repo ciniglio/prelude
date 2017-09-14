@@ -478,3 +478,17 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
 (use-package aec-buffers
   :load-path "lisp/"
   :bind (("s-b" . aec/switch-to-previous-buffer )))
+
+(use-package tuareg
+  :ensure t)
+
+(use-package merlin
+  :ensure t
+  :init (progn
+          (add-hook 'tuareg-mode-hook 'merlin-mode)
+          (with-eval-after-load 'company
+            (add-to-list 'company-backends 'merlin-company-backend))
+          (add-hook 'merlin-mode-hook 'company-mode)))
+;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
+(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+;; ## end of OPAM user-setup addition for emacs / base ## keep this line
