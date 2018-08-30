@@ -97,8 +97,12 @@
     (run-with-idle-timer 10 nil #'projectile-cleanup-known-projects)
     (setq projectile-completion-system 'helm
 	  projectile-find-dir-includes-top-level t
-          projectile-switch-project-action 'magit-status))
-  :diminish projectile-mode)
+          projectile-switch-project-action 'magit-status)
+    (when (eq system-type 'windows-nt)
+      (setq projectile-indexing-method 'alien)))
+  :diminish projectile-mode
+  :bind (("C-c p p" . projectile-switch-project)
+         ("C-c p f" . projectile-find-file)))
 
 (use-package helm-projectile
   :demand
@@ -478,3 +482,13 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
 (use-package aec-buffers
   :load-path "lisp/"
   :bind (("s-b" . aec/switch-to-previous-buffer )))
+
+(when (eq system-type 'windows-nt)
+  (setq find-program "C:\\\"Program Files\"\\git\\usr\\bin\\find.exe")
+  (setq grep-program "C:\\\"Program Files\"\\git\\usr\\bin\\grep.exe")
+  (defadvice grep-compute-defaults (around grep-compute-defaults-advice-null-device)
+    "Use cygwin's /dev/null as the null-device."
+    (let ((null-device "/dev/null"))
+      ad-do-it))
+  (ad-activate 'grep-compute-defaults))
+(put 'narrow-to-region 'disabled nil)

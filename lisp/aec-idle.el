@@ -1,8 +1,9 @@
 (defvar *aec-idle-abort* nil)
 
+(setq lexical-binding t)
 (defun aec-run-when-idle-in
     (seconds f)
-  (lexical-let ((seconds-to-idle 5)
+  (let ((seconds-to-idle 5)
                 (f f))
     (run-at-time
      (format "%d sec" seconds)
@@ -25,7 +26,7 @@
          (message "Running function immediately...")
          (funcall f)))
    (unless *aec-idle-abort*
-     (lexical-let ((seconds-between-runs seconds)
+     (let ((seconds-between-runs seconds)
                    (f f))
        (message "Rescheduling...")
        (aec-run-when-idle-in
