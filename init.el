@@ -17,7 +17,7 @@
 (use-package aec-custom :load-path "lisp/")
 (use-package aec-backup :load-path "lisp/")
 
-(use-package ciniglio-site-lisp
+(use-package ciniglio-site-specific
   :if (file-exists-p "~/.ciniglio-site-specific/site-lisp")
   :load-path "~/.ciniglio-site-specific/site-lisp/")
 
@@ -82,9 +82,21 @@
 
 (use-package magit
   :ensure t
+  :bind (("C-c g" . aec-hydra-magit/body))
   :init (progn (magit-wip-after-save-mode)
 	       (magit-wip-after-apply-mode))
-  :chords (("GG" . magit-status)))
+  :chords (("GG" . magit-status))
+  :config             
+  (defhydra aec-hydra-magit (:color blue)
+      "Git"
+      ("g" magit-status "status")
+      ("s" helm-grep-do-git-grep "grep")
+      ("m" git-timemachine "timemachine")))
+
+(use-package magit-org-todos
+  :ensure t
+  :config
+  (magit-org-todos-autoinsert))
 
 (use-package git-timemachine
   :ensure t)
@@ -219,13 +231,13 @@
 	 ("C-x k" . bury-buffer)
 	 ("C-c x k" . kill-this-buffer)))
 
-(use-package apropospriate-theme
+(use-package one-themes
   :ensure t
-  :config  (load-theme 'apropospriate-dark))
+  :config (load-theme 'one-dark))
 
 (add-hook 'after-make-frame-functions
           (lambda (frame)
-            (run-at-time "2 sec" nil
+            (run-at-time "1 sec" nil
                          (lambda ()
                            (set-face-attribute 'fringe nil
                                                :background (face-background 'default))))))
@@ -234,7 +246,7 @@
   :ensure t
   :config (progn
 	    (setq sml/no-confirm-load-theme t)
-	    (setq sml/theme 'respectful))
+	    (sml/apply-theme 'respectful))
   :init (sml/setup))
 
 (use-package column-number-mode
@@ -483,6 +495,36 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
   :load-path "lisp/"
   :bind (("s-b" . aec/switch-to-previous-buffer )))
 
+
+(use-package tuareg
+  :ensure t)
+
+(use-package merlin
+  :ensure t
+  :init (progn
+          (add-hook 'tuareg-mode-hook 'merlin-mode)
+          (with-eval-after-load 'company
+            (add-to-list 'company-backends 'merlin-company-backend))
+          (add-hook 'merlin-mode-hook 'company-mode)))
+;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
+(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+;; ## end of OPAM user-setup addition for emacs / base ## keep this line
+
+(use-package zel
+  :ensure t
+  :demand t
+  :bind (("C-x C-r" . zel-find-file-frecent))
+  :config (zel-install))
+
+(use-package yaml-mode
+  :ensure t)
+
+(use-package nginx-mode
+  :ensure t)
+
+(use-package aec-incubating :load-path "lisp/")
+
+
 (when (eq system-type 'windows-nt)
   (setq find-program "C:\\\"Program Files\"\\git\\usr\\bin\\find.exe")
   (setq grep-program "C:\\\"Program Files\"\\git\\usr\\bin\\grep.exe")
@@ -492,3 +534,4 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
       ad-do-it))
   (ad-activate 'grep-compute-defaults))
 (put 'narrow-to-region 'disabled nil)
+

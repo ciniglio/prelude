@@ -12,4 +12,38 @@
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 
+(defun aec/beginning-of-word ()
+  "Move point to the beginning of nearest word"
+  (interactive)
+  (forward-word)
+  (backward-word))
+
+(defun aec/end-of-word-p (curpos)
+  "whether the point is at the end of a word."
+  (interactive "d")
+  (or
+   ;; end of buffer is obviously the end of the word
+   (equal curpos (point-max))
+
+   ;; word character followed by non-underscore non-word character
+   (and
+    (equal (string-match "\\w" (substring (buffer-string) (- curpos 2))) 0)
+    (and
+     (equal (string-match "\\W" (substring (buffer-string) (- curpos 1))) 0)
+     (not (equal (string-match "_" (substring (buffer-string) (- curpos 1))) 0))))
+
+   ;; underscore followed by non-word character
+   (and
+    (equal (string-match "_" (substring (buffer-string) (- curpos 2))) 0)
+    (equal (string-match "\\W" (substring (buffer-string) (- curpos 1))) 0))))
+
+(defun snake-case-ify ()
+  "Take a camelCased word and transform to snake_case"
+  (interactive)
+  (aec/beginning-of-word)
+  (while (not (aec/end-of-word-p (point)))
+    (call-interactively 'subword-downcase)
+    (insert "_"))
+  (delete-char -1))
+
 (provide 'aec-utils)
