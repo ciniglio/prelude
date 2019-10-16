@@ -46,4 +46,16 @@
     (insert "_"))
   (delete-char -1))
 
+(defun aec/copy-file-name-as-kill ()
+  "Put the current file name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (with-temp-buffer
+        (insert filename)
+        (clipboard-kill-region (point-min) (point-max)))
+      (message filename))))
+
 (provide 'aec-utils)

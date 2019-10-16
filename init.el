@@ -1,12 +1,26 @@
 (setq load-prefer-newer t)
 
 (require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+;;   (when no-ssl
+;;     (warn "\
+;; Your version of Emacs does not support SSL connections,
+;; which is unsafe because it allows man-in-the-middle attacks.
+;; There are two things you can do about this warning:
+;; 1. Install an Emacs version that does support SSL and be safe.
+;; 2. Remove this warning from your init file so you won't see it again."))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 (package-initialize)
+(setq package-enable-at-startup nil)
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
@@ -17,9 +31,37 @@
 (use-package aec-custom :load-path "lisp/")
 (use-package aec-backup :load-path "lisp/")
 
-(use-package ciniglio-site-specific
-  :if (file-exists-p "~/.ciniglio-site-specific/site-lisp")
-  :load-path "~/.ciniglio-site-specific/site-lisp/")
+(use-package counsel
+  :ensure t
+  :bind (("C-x C-m" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ("M-y" . counsel-yank-pop)
+         ("C-s" . swiper)
+         ("C-x C-b" . counsel-switch-buffer)
+         ("C-c C-j" . counsel-git-grep))
+  :config (progn (ivy-mode 1)
+                 (setq ivy-use-virtual-buffers t)
+                 (setq counsel-find-file-ignore-regexp
+                       (concat
+                        ;; File names beginning with # or .
+                        "\\(?:\\`[#.]\\)"
+                        ;; File names ending with # or ~
+                        "\\|\\(?:\\`.+?[#~]\\'\\)"))))
+
+(use-package ivy-posframe
+  :ensure t
+  :config (ivy-posframe-mode))
+
+(use-package frog-jump-buffer
+  :ensure t
+  :bind (("C-M-b" . frog-jump-buffer)))
+
+(use-package ivy-hydra
+  :ensure t)
+
+(use-package ivy-prescient
+  :ensure t
+  :config (ivy-prescient-mode 1))
 
 (use-package company
   :ensure t
@@ -41,44 +83,44 @@
   :defer t
   :config (setq vc-follow-symlinks t))
 
-(use-package helm
-  :ensure t
-  :bind (("C-c h r" . helm-resume)
-         ("C-c h i" . helm-semantic-or-imenu))
-  :init (helm-mode 1)
-  :config (progn
-	    (setq helm-split-window-in-side-p t)
-	    (set-face-attribute 'helm-selection-line nil
-				:background "#ba55d3")
-	    (set-face-attribute 'helm-selection nil
-				:background "#ba55d3")
-            (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-            (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-            (define-key helm-map (kbd "C-z") 'helm-select-action)
-            (define-key helm-map (kbd "M-n") 'helm-next-source)
-            (define-key helm-map (kbd "M-p") 'helm-previous-source))
-  :diminish helm-mode)
+;; (use-package helm
+;;   :ensure t
+;;   :bind (("C-c h r" . helm-resume)
+;;          ("C-c h i" . helm-semantic-or-imenu))
+;;   :init (helm-mode 1)
+;;   :config (progn
+;; 	    (setq helm-split-window-in-side-p t)
+;; 	    (set-face-attribute 'helm-selection-line nil
+;; 				:background "#ba55d3")
+;; 	    (set-face-attribute 'helm-selection nil
+;; 				:background "#ba55d3")
+;;             (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+;;             (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+;;             (define-key helm-map (kbd "C-z") 'helm-select-action)
+;;             (define-key helm-map (kbd "M-n") 'helm-next-source)
+;;             (define-key helm-map (kbd "M-p") 'helm-previous-source))
+;;   :diminish helm-mode)
 
-(use-package helm-misc
-  :ensure helm
-  :bind (([remap switch-to-buffer] . helm-mini)))
+;; (use-package helm-misc
+;;   :ensure helm
+;;   :bind (([remap switch-to-buffer] . helm-mini)))
 
-(use-package helm-adaptive-mode
-  :ensure helm
-  :config (helm-adaptive-mode t))
+;; (use-package helm-adaptive-mode
+;;   :ensure helm
+;;   :config (helm-adaptive-mode t))
 
-(use-package helm-descbinds
-  :ensure t
-  :bind (([remap describe-bindings] . helm-descbinds)))
+;; (use-package helm-descbinds
+;;   :ensure t
+;;   :bind (([remap describe-bindings] . helm-descbinds)))
 
-(use-package helm-apropos
-  :ensure helm
-  :bind (([remap apropos-command] . helm-apropos)))
+;; (use-package helm-apropos
+;;   :ensure helm
+;;   :bind (([remap apropos-command] . helm-apropos)))
 
-(use-package helm-command
-  :ensure helm
-  :bind (([remap execute-extended-command] . helm-M-x)
-	 ("C-x C-m" . helm-M-x)))
+;; (use-package helm-command
+;;   :ensure helm
+;;   :bind (([remap execute-extended-command] . helm-M-x)
+;; 	 ("C-x C-m" . helm-M-x)))
 
 (use-package magit
   :ensure t
@@ -86,12 +128,13 @@
   :init (progn (magit-wip-after-save-mode)
 	       (magit-wip-after-apply-mode))
   :chords (("GG" . magit-status))
-  :config             
-  (defhydra aec-hydra-magit (:color blue)
-      "Git"
-      ("g" magit-status "status")
-      ("s" helm-grep-do-git-grep "grep")
-      ("m" git-timemachine "timemachine")))
+  :config (progn
+            (setq magit-completing-read-function 'ivy-completing-read)
+            (defhydra aec-hydra-magit (:color blue)
+              "Git"
+              ("g" magit-status "status")
+              ;; ("s" helm-grep-do-git-grep "grep")
+              ("m" git-timemachine "timemachine"))))
 
 (use-package magit-org-todos
   :ensure t
@@ -107,54 +150,55 @@
   :config 
   (progn 
     (run-with-idle-timer 10 nil #'projectile-cleanup-known-projects)
-    (setq projectile-completion-system 'helm
+    (setq projectile-completion-system 'ivy
 	  projectile-find-dir-includes-top-level t
           projectile-switch-project-action 'magit-status)
     (when (eq system-type 'windows-nt)
       (setq projectile-indexing-method 'alien)))
   :diminish projectile-mode
   :bind (("C-c p p" . projectile-switch-project)
-         ("C-c p f" . projectile-find-file)))
+         ("C-c p f" . projectile-find-file)
+         ("C-c C-c" . projectile-compile-project)))
 
-(use-package helm-projectile
-  :demand
-  :ensure t
-  :init (progn
-            (add-to-list 'helm-mini-default-sources 'helm-source-projectile-recentf-list)
-            (add-to-list 'helm-mini-default-sources 'helm-source-projectile-buffers-list))
-  :bind (([remap projectile-find-file] . helm-projectile-find-file)))
+;; (use-package helm-projectile
+;;   :demand
+;;   :ensure t
+;;   :init (progn
+;;             (add-to-list 'helm-mini-default-sources 'helm-source-projectile-recentf-list)
+;;             (add-to-list 'helm-mini-default-sources 'helm-source-projectile-buffers-list))
+;;   :bind (([remap projectile-find-file] . helm-projectile-find-file)))
 
-(use-package helm-files
-  :ensure helm
-  :defer t
-  :bind (([remap find-file] . helm-find-files)
-	 ("C-c f r"         . helm-recentf))
-  :config (progn
-	    (setq helm-recentf-fuzzy-match t
-		  helm-ff-file-name-history-use-recentf t)
-            (define-key helm-read-file-map (kbd "<backspace>") 'helm-find-files-up-one-level)
-            (define-key helm-find-files-map (kbd "<backspace>") 'helm-find-files-up-one-level)))
+;; (use-package helm-files
+;;   :ensure helm
+;;   :defer t
+;;   :bind (([remap find-file] . helm-find-files)
+;; 	 ("C-c f r"         . helm-recentf))
+;;   :config (progn
+;; 	    (setq helm-recentf-fuzzy-match t
+;; 		  helm-ff-file-name-history-use-recentf t)
+;;             (define-key helm-read-file-map (kbd "<backspace>") 'helm-find-files-up-one-level)
+;;             (define-key helm-find-files-map (kbd "<backspace>") 'helm-find-files-up-one-level)))
 
-(use-package helm-ring
-  :ensure helm
-  :bind (([remap yank-pop] . helm-show-kill-ring)))
+;; (use-package helm-ring
+;;   :ensure helm
+;;   :bind (([remap yank-pop] . helm-show-kill-ring)))
 
-(use-package helm-swoop
-  :ensure t
-  :after helm
-  :bind (("C-c s s" . helm-swoop))
-  :config (progn
-            (setq helm-swoop-pre-input-function (lambda () "")
-                  helm-swoop-speed-or-color t
-                  helm-swoop-split-window-function #'helm-default-display-buffer)
+;; (use-package helm-swoop
+;;   :ensure t
+;;   :after helm
+;;   :bind (("C-c s s" . helm-swoop))
+;;   :config (progn
+;;             (setq helm-swoop-pre-input-function (lambda () "")
+;;                   helm-swoop-speed-or-color t
+;;                   helm-swoop-split-window-function #'helm-default-display-buffer)
             
-            (defun ciniglio/helm-swoop-last-query ()
-              "Use the last query as the input"
-              (interactive)
-              (with-selected-window (minibuffer-window)
-                (delete-minibuffer-contents)
-                (insert helm-swoop-last-query)))
-            (bind-key "C-s" 'ciniglio/helm-swoop-last-query helm-swoop-map)))
+;;             (defun ciniglio/helm-swoop-last-query ()
+;;               "Use the last query as the input"
+;;               (interactive)
+;;               (with-selected-window (minibuffer-window)
+;;                 (delete-minibuffer-contents)
+;;                 (insert helm-swoop-last-query)))
+;;             (bind-key "C-s" 'ciniglio/helm-swoop-last-query helm-swoop-map)))
 
 (use-package recentf
   :init (recentf-mode)
@@ -233,7 +277,11 @@
 
 (use-package one-themes
   :ensure t
-  :config (load-theme 'one-dark))
+  :config (if (display-graphic-p)
+              (load-theme 'one-dark)))
+
+(when (not (display-graphic-p))
+  (load-theme 'leuven))
 
 (add-hook 'after-make-frame-functions
           (lambda (frame)
@@ -242,12 +290,12 @@
                            (set-face-attribute 'fringe nil
                                                :background (face-background 'default))))))
 
-(use-package smart-mode-line
-  :ensure t
-  :config (progn
-	    (setq sml/no-confirm-load-theme t)
-	    (sml/apply-theme 'respectful))
-  :init (sml/setup))
+;; (use-package smart-mode-line
+;;   :ensure t
+;;   :config (progn
+;; 	    (setq sml/no-confirm-load-theme t)
+;; 	    (sml/apply-theme 'respectful))
+;;   :init (sml/setup))
 
 (use-package column-number-mode
   :defer t
@@ -371,18 +419,18 @@
 
 (delete-selection-mode 1)
 
-(use-package org-plus-contrib
-  :ensure t
-  :pin org
-  :config (setq org-replace-disputed-keys t
-                org-startup-folded nil
-                org-startup-truncated nil))
+;; (use-package org-plus-contrib
+;;   :ensure t
+;;   :pin org
+;;   :config (setq org-replace-disputed-keys t
+;;                 org-startup-folded nil
+;;                 org-startup-truncated nil))
 
-(use-package helm-org-rifle
-  :ensure t)
+;; (use-package helm-org-rifle
+;;   :ensure t)
 
-(use-package helm-orgcard
-  :ensure t)
+;; (use-package helm-orgcard
+;;   :ensure t)
 
 (use-package bm
   :ensure t
@@ -465,12 +513,12 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
       ("x"   bm-remove-all-current-buffer :color blue)
       ("X"   bm-remove-all-all-buffers :color blue)
       ("r"   pop-to-mark-command :color blue)
-      ("l"   helm-bm :color blue)
+      ;;      ("l"   helm-bm :color blue)
       ("RET" nil "cancel" :color blue)
       ("q"   nil "cancel" :color blue))))
 
-(use-package helm-bm
-  :ensure t)
+;; (use-package helm-bm
+;;   :ensure t)
 
 (use-package aec-utils :load-path "lisp/")
 
@@ -481,6 +529,7 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
 
 (use-package undo-tree
   :ensure t
+  :config (global-undo-tree-mode)
   :bind (([remap undo] . undo-tree-visualize)))
 
 (use-package rcirc
@@ -524,7 +573,6 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
 
 (use-package aec-incubating :load-path "lisp/")
 
-
 (when (eq system-type 'windows-nt)
   (setq find-program "C:\\\"Program Files\"\\git\\usr\\bin\\find.exe")
   (setq grep-program "C:\\\"Program Files\"\\git\\usr\\bin\\grep.exe")
@@ -535,3 +583,21 @@ Bookmark _n_ext (_N_ in lifo order)            toggle book_m_ark        ^^_/_ bm
   (ad-activate 'grep-compute-defaults))
 (put 'narrow-to-region 'disabled nil)
 
+(use-package whitespace-cleanup-mode
+  :ensure t)
+
+(use-package csharp-mode
+  :ensure t)
+
+(use-package dumb-jump
+  :ensure t
+  :bind (("C-c C-g" . dumb-jump-go)
+         ("C-c C-b" . dumb-jump-back)))
+
+;; C-c c-b is overridden by cc-mode which basically everything derives from
+(bind-keys*
+ ("C-c C-b" . dumb-jump-back))
+
+(use-package ciniglio-site-specific
+  :if (file-exists-p "~/.ciniglio-site-specific/site-lisp")
+  :load-path "~/.ciniglio-site-specific/site-lisp/")

@@ -3,6 +3,9 @@
   :config
   (magit-org-todos-autoinsert))
 
+(use-package doom-modeline
+  :ensure t)
+
 (provide 'aec-incubating)
 
 

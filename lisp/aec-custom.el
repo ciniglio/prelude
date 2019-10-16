@@ -36,7 +36,7 @@
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
 ;; Better fonts
-(add-to-list 'after-make-frame-functions
-             (lambda (_) (set-frame-font "Monaco-14" t t)))
-
+;;(add-to-list 'after-make-frame-functions
+;;             (lambda (_) (set-frame-font "Monaco-14" t t)))
+;; 
 (provide 'aec-custom)
